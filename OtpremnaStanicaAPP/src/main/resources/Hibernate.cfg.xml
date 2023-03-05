@@ -22,6 +22,7 @@
     <mapping class="otpremnastanica.model.Busotina" />
      <mapping class="otpremnastanica.model.PosaoBusotina" />
     <mapping class="otpremnastanica.model.Odrzavanje" />
+     <mapping class="otpremnastanica.model.Operater" />
    
   
     
