@@ -1,5 +1,8 @@
-package zivkovic.model;
+package otpremnastanica.model;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class NaftnoPolje extends Entitet {
 
 	private String naziv;

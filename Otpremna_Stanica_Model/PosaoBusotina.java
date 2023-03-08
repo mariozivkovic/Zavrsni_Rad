@@ -1,107 +1,96 @@
-package zivkovic.model;
+package otpremnastanica.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import zivkovic.Pomocno;
-
+@Entity
 public class PosaoBusotina extends Entitet {
 
-	
-	private Posao posao;
-	private Busotina busotina;
-	private String napomena;
-	private BigDecimal tlakTubinga;
-	private BigDecimal tlakNaftovoda;
-	private BigDecimal tlakCasinga;
+    @ManyToOne
+    private Odrzavanje odrzavanje;
+    @ManyToOne
+    private Posao posao;
+    @ManyToOne
+    private Busotina busotina;
 
-	
-	
+    private String napomena;
+    private BigDecimal tlakTubinga;
+    private BigDecimal tlakNaftovoda;
+    private BigDecimal tlakCasinga;
 
-	public PosaoBusotina() {
-		super();
-	
-		
-	}
-	
-	public PosaoBusotina(int sifra, Posao posao, Busotina busotina, String napomena, BigDecimal tlakTubinga,
-			BigDecimal tlakNaftovoda, BigDecimal tlakCasinga) {
-		super(sifra);
-		this.posao = posao;
-		this.busotina = busotina;
-		this.napomena = napomena;
-		this.tlakTubinga = tlakTubinga;
-		this.tlakNaftovoda = tlakNaftovoda;
-		this.tlakCasinga = tlakCasinga;
-		
-	}
+    public PosaoBusotina() {
+        super();
+    }
 
+    public PosaoBusotina(Odrzavanje odrzavanje, Posao posao, Busotina busotina, String napomena, BigDecimal tlakTubinga, BigDecimal tlakNaftovoda, BigDecimal tlakCasinga, int sifra) {
+        super(sifra);
+        this.odrzavanje = odrzavanje;
+        this.posao = posao;
+        this.busotina = busotina;
+        this.napomena = napomena;
+        this.tlakTubinga = tlakTubinga;
+        this.tlakNaftovoda = tlakNaftovoda;
+        this.tlakCasinga = tlakCasinga;
+    }
 
-	public Posao getPosao() {
-		return posao;
-	}
+    public Odrzavanje getOdrzavanje() {
+        return odrzavanje;
+    }
 
-	public void setPosao(Posao posao) {
-		this.posao = posao;
-	}
+    public void setOdrzavanje(Odrzavanje odrzavanje) {
+        this.odrzavanje = odrzavanje;
+    }
 
-	public Busotina getBusotina() {
-		return busotina;
-	}
+    public Posao getPosao() {
+        return posao;
+    }
 
-	public void setBusotina(Busotina busotina) {
-		this.busotina = busotina;
-	}
+    public void setPosao(Posao posao) {
+        this.posao = posao;
+    }
 
-	public String getNapomena() {
-		return napomena;
-	}
+    public Busotina getBusotina() {
+        return busotina;
+    }
 
-	public void setNapomena(String napomena) {
-		this.napomena = napomena;
-	}
+    public void setBusotina(Busotina busotina) {
+        this.busotina = busotina;
+    }
 
-	public BigDecimal getTlakTubinga() {
-		return tlakTubinga;
-	}
+    public String getNapomena() {
+        return napomena;
+    }
 
-	public void setTlakTubinga(BigDecimal tlakTubinga) {
-		this.tlakTubinga = tlakTubinga;
-	}
+    public void setNapomena(String napomena) {
+        this.napomena = napomena;
+    }
 
-	public BigDecimal getTlakNaftovoda() {
-		return tlakNaftovoda;
-	}
+    public BigDecimal getTlakTubinga() {
+        return tlakTubinga;
+    }
 
-	public void setTlakNaftovoda(BigDecimal tlakNaftovoda) {
-		this.tlakNaftovoda = tlakNaftovoda;
-	}
+    public void setTlakTubinga(BigDecimal tlakTubinga) {
+        this.tlakTubinga = tlakTubinga;
+    }
 
-	public BigDecimal getTlakCasinga() {
-		return tlakCasinga;
-	}
+    public BigDecimal getTlakNaftovoda() {
+        return tlakNaftovoda;
+    }
 
-	public void setTlakCasinga(BigDecimal tlakCasinga) {
-		this.tlakCasinga = tlakCasinga;
-	}
-	
-	@Override
-	public String toString() {
-		
-		return posao + " (" +" na busotini - " + busotina.getNaziv() + " )" + "(" + napomena + ")" +
-				" (" +" Pt "+ tlakTubinga + ") " + "(" + " Pn " + tlakNaftovoda + " )" + "("+ " Pc " +tlakCasinga + ")";
-		
-	}
+    public void setTlakNaftovoda(BigDecimal tlakNaftovoda) {
+        this.tlakNaftovoda = tlakNaftovoda;
+    }
 
-	
+    public BigDecimal getTlakCasinga() {
+        return tlakCasinga;
+    }
 
-	
-
-
-	
-	
-
-
+    public void setTlakCasinga(BigDecimal tlakCasinga) {
+        this.tlakCasinga = tlakCasinga;
+    }
 
 }

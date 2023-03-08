@@ -1,7 +1,14 @@
-package zivkovic.model;
+package otpremnastanica.model;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 abstract public class Entitet {
-
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int sifra;
 	
 	public Entitet() {

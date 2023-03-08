@@ -6,8 +6,6 @@ package otpremnastanica.controller;
 
 import jakarta.persistence.NoResultException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 import otpremnastanica.model.Operater;
 import otpremnastanica.util.OtpremnaStanicaException;
@@ -16,9 +14,9 @@ import otpremnastanica.util.OtpremnaStanicaException;
  *
  * @author lovre
  */
-public class ObradaOperater extends Obrada<Operater>{
-
-    @Override
+public class ObradaOperater  extends Obrada<Operater>{
+    
+      @Override
     public List<Operater> read() {
         
         return session.createQuery("from Operater", Operater.class).list();
@@ -73,7 +71,5 @@ public class ObradaOperater extends Obrada<Operater>{
         
         return null;
 }
-}
-
-
     
+}
