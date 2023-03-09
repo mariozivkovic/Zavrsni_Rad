@@ -18,7 +18,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
     @Override
     public List<Zaposlenik> read() {
 
-        return session.createQuery("from Zaposlenik", Zaposlenik.class).list();
+        return session.createQuery("from Zaposlenik order by ime", Zaposlenik.class).list();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
 
     private void kontrolaImeMaksimalnaDuzina() throws OtpremnaStanicaException {
 
-        if (entitet.getIme().trim().length() < 20) {
+        if (entitet.getIme().trim().length() > 20) {
             throw new OtpremnaStanicaException("Ime zaposlenika može imati maksimalno 20 znakova");
         }
     }
@@ -106,10 +106,10 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         try {
             zaposlenici = session.createQuery("from Zaposlenik z "
                     + " where z.ime=:ime", Zaposlenik.class)
-                    .setParameter(" ime", entitet.getIme()).list();
+                    .setParameter("ime", entitet.getIme()).list();
         } catch (Exception e) {
         }
-        if (zaposlenici != null && !zaposlenici.isEmpty()) {
+        if (zaposlenici!= null && !zaposlenici.isEmpty()) {
             throw new OtpremnaStanicaException("Zaposlenik sa istim imenom postoji u bazi");
         }
     }
@@ -151,7 +151,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
 
     private void kontrolaPrezimeMaksimalnaDuzina() throws OtpremnaStanicaException {
 
-        if (entitet.getPrezime().trim().length() < 50) {
+        if (entitet.getPrezime().trim().length() > 50) {
             throw new OtpremnaStanicaException("Prezime zaposlenika može imati maksimalno 50 znakova");
         }
     }
@@ -162,17 +162,17 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         try {
             zaposlenici = session.createQuery("from Zaposlenik z "
                     + " where z.prezime=:prezime", Zaposlenik.class)
-                    .setParameter(" prezime", entitet.getPrezime()).list();
+                    .setParameter("prezime", entitet.getPrezime()).list();
         } catch (Exception e) {
         }
-        if (zaposlenici != null && !zaposlenici.isEmpty()) {
+        if (zaposlenici!= null && !zaposlenici.isEmpty()) {
             throw new OtpremnaStanicaException("Zaposlenik sa istim prezimenom postoji u bazi");
         }
     }
 
     private void kontrolaOib() throws OtpremnaStanicaException {
 
-        if (Alati.kontrolaOIB(entitet.getOib())) {
+        if (!Alati.kontrolaOIB(entitet.getOib())) {
             throw new OtpremnaStanicaException("OIB nije u dobrom formatu");
         }
     }
@@ -208,14 +208,14 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
 
     private void kontrolaEmailMinimalnaDuzina() throws OtpremnaStanicaException {
 
-        if (entitet.getEmail().trim().length() < 11) {
+        if (entitet.getEmail().trim().length() < 12) {
             throw new OtpremnaStanicaException("Email može imati minimalno 11 znakova");
         }
     }
 
     private void kontrolaEmailMaksimalnaDuzina() throws OtpremnaStanicaException {
 
-        if (entitet.getEmail().trim().length() < 50) {
+        if (entitet.getEmail().trim().length() > 50) {
             throw new OtpremnaStanicaException("Email može imati maksimalno 50 znakova");
         }
     }
@@ -226,10 +226,10 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         try {
             zaposlenici = session.createQuery("from Zaposlenik z "
                     + " where z.email=:email", Zaposlenik.class)
-                    .setParameter(" email", entitet.getEmail()).list();
+                    .setParameter("email", entitet.getEmail()).list();
         } catch (Exception e) {
         }
-        if (zaposlenici != null && !zaposlenici.isEmpty()) {
+        if (zaposlenici!= null && !zaposlenici.isEmpty()) {
             throw new OtpremnaStanicaException("Zaposlenik sa istim emailom postoji u bazi");
         }
     }
@@ -239,7 +239,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         kontrolaRadnoMjestoNijeBroj();
         kontrolaRadnoMjestoMinimalnaDuzina();
         kontrolaRadnoMjestoMaksimalnaDuzina();
-        
+        kontrolaRadnoMjestoDuploUBazi();
         
     }
 
@@ -272,9 +272,22 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
 
     private void kontrolaRadnoMjestoMaksimalnaDuzina() throws OtpremnaStanicaException{
         
-         if (entitet.getRadnoMjesto().trim().length() < 150) {
+         if (entitet.getRadnoMjesto().trim().length() > 150) {
             throw new OtpremnaStanicaException("Radno mjesto može imati maksimalno 150 znakova");
         }
     }
-
+    
+     private void kontrolaRadnoMjestoDuploUBazi() throws OtpremnaStanicaException{
+         
+          List<Zaposlenik> zaposlenici = null;
+        try {
+            zaposlenici = session.createQuery("from Zaposlenik z "
+                    + " where z.radnoMjesto=:radnoMjesto", Zaposlenik.class)
+                    .setParameter("radnoMjesto", entitet.getRadnoMjesto()).list();
+        } catch (Exception e) {
+        }
+        if (zaposlenici!= null && !zaposlenici.isEmpty()) {
+            throw new OtpremnaStanicaException("Zaposlenik sa istim radnim mjestom postoji u bazi");
+        }
+     }
 }

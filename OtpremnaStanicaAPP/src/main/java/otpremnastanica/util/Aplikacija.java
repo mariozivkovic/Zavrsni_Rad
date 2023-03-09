@@ -4,6 +4,8 @@
  */
 package otpremnastanica.util;
 
+import otpremnastanica.model.Operater;
+
 /**
  *
  * @author lovre
@@ -11,5 +13,5 @@ package otpremnastanica.util;
 public class Aplikacija {
     
     public static final String NAZIV_APP ="Otpremna stanica APP";
-    
+    public static Operater OPERATER;
 }

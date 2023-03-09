@@ -4,6 +4,13 @@
  */
 package otpremnastanica.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import otpremnastanica.util.Aplikacija;
+
 /**
  *
  * @author lovre
@@ -15,7 +22,41 @@ public class ProzorIzbornik extends javax.swing.JFrame {
      */
     public ProzorIzbornik() {
         initComponents();
+        setTitle(Aplikacija.NAZIV_APP + ": "
+                + Aplikacija.OPERATER.getImePrezime());
+        
+       pokreniSat();
+      
     }
+    
+    private void pokreniSat(){
+         new Vrijeme().start();
+    }
+    
+        private class Vrijeme extends Thread{
+            
+            private SimpleDateFormat df;
+
+        public Vrijeme() {
+            
+            df = new SimpleDateFormat("dd.MM.YYYY. hh:mm:ss");
+        }
+            
+            
+
+        @Override
+        public void run() {
+             while(true){
+        lblVrijeme.setText(df.format(new Date()));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                
+            }
+        }
+        }
+            
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,24 +67,157 @@ public class ProzorIzbornik extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToolBar1 = new javax.swing.JToolBar();
+        lblVrijeme = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jToolBar1.setBackground(new java.awt.Color(37, 179, 213));
+        jToolBar1.setRollover(true);
+
+        lblVrijeme.setBackground(new java.awt.Color(37, 179, 213));
+        lblVrijeme.setForeground(new java.awt.Color(102, 102, 102));
+        jToolBar1.add(lblVrijeme);
+
+        jMenuBar1.setBackground(new java.awt.Color(37, 179, 213));
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
+
+        jMenu1.setBorder(null);
+        jMenu1.setForeground(new java.awt.Color(102, 102, 102));
+        jMenu1.setText("Aplikacija");
+        jMenu1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        jMenuItem1.setText("Izlaz");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setForeground(new java.awt.Color(102, 102, 102));
+        jMenu2.setText("Programi");
+        jMenu2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        jMenuItem2.setText("Zaposlenici");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setText("Naftna polja");
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Bušotine");
+        jMenu2.add(jMenuItem4);
+
+        jMenuItem5.setText("Poslovi");
+        jMenu2.add(jMenuItem5);
+
+        jMenuItem6.setText("Održavanje");
+        jMenu2.add(jMenuItem6);
+
+        jMenuItem7.setText("Podaci");
+        jMenu2.add(jMenuItem7);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setForeground(new java.awt.Color(102, 102, 102));
+        jMenu3.setText("O aplikaciji");
+        jMenu3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
+
+        jMenuItem8.setText("Opis");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem8);
+
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 255, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+
+    }//GEN-LAST:event_jMenu3ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        JOptionPane.showMessageDialog(getRootPane(), "Aplikacija nastala"
+                + " kao zavrsni rad obrazovanja za java programera "
+               + "\ni osobni projekt polaznika,"
+                + " namjenjena za radne procese"
+              + "\n i pracenje podataka u naftnoj "
+                 + "industriji, otpremnoj"
+                + " stanici nafte i plina."
+              + "\n Detaljan pregled te podatke izrade"
+                + " aplikacije mozete pronaci "
+               + "\nna linku: https://github.com/mariozivkovic/Zavrsni_Rad ", 
+                " O aplikaciji", JOptionPane.INFORMATION_MESSAGE
+        );
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new ProzorZaposlenik().setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel lblVrijeme;
     // End of variables declaration//GEN-END:variables
 }

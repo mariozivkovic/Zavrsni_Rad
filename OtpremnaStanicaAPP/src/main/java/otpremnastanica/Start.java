@@ -5,8 +5,7 @@
 package otpremnastanica;
 
 
-import otpremnastanica.util.HibernateUtil;
-import otpremnastanica.util.PocetniInsert;
+
 import otpremnastanica.view.SplashScreen;
 
 
@@ -24,7 +23,7 @@ public class Start {
        
       new SplashScreen().setVisible(true);
        
-    
+       
      
      
         
