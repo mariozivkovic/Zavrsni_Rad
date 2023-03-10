@@ -50,6 +50,11 @@ public class Busotina extends Entitet {
         this.naftnoPolje = naftnoPolje;
     }
 
+    @Override
+    public String toString() {
+        return naziv;
+    }
+
 	
 
 	

@@ -5,6 +5,7 @@
 package otpremnastanica.controller;
 
 import java.util.List;
+import otpremnastanica.model.Busotina;
 import otpremnastanica.model.NaftnoPolje;
 
 import otpremnastanica.util.OtpremnaStanicaException;
@@ -18,7 +19,7 @@ public class ObradaNaftnoPolje extends Obrada<NaftnoPolje> {
     @Override
     public List<NaftnoPolje> read() {
 
-        return session.createQuery("from NaftnoPolje", NaftnoPolje.class).list();
+        return session.createQuery("from NaftnoPolje order by naziv", NaftnoPolje.class).list();
     }
 
     @Override
@@ -36,7 +37,13 @@ public class ObradaNaftnoPolje extends Obrada<NaftnoPolje> {
 
     @Override
     protected void kontrolaBrisanje() throws OtpremnaStanicaException {
-
+        if(entitet.getBusotine()!=null && !entitet.getBusotine().isEmpty()){
+           
+            throw new OtpremnaStanicaException("Naftno polje se ne može obrisati"
+                    + " jer ima bušotine");
+        }
+            
+        
     }
 
     private void kontrolaNaziv() throws OtpremnaStanicaException {

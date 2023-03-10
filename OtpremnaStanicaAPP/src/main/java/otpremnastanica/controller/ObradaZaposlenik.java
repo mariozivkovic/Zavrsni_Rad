@@ -4,7 +4,10 @@
  */
 package otpremnastanica.controller;
 
+import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import otpremnastanica.model.Zaposlenik;
 import otpremnastanica.util.Alati;
 import otpremnastanica.util.OtpremnaStanicaException;
@@ -28,6 +31,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         kontrolaOib();
         kontrolaEmail();
         kontrolaRadnoMjesto();
+        kontrolaIMePrezime();
     }
 
     @Override
@@ -64,6 +68,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         kontrolaImeMinimalnaDuzina();
         kontrolaImeMaksimalnaDuzina();
         kontrolaImeDuploUBazi();
+      
     }
 
     private void kontrolaImeNijeBroj() throws OtpremnaStanicaException {
@@ -158,11 +163,11 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
 
     private void kontrolaPrezimeDuploUBazi() throws OtpremnaStanicaException {
 
-        List<Zaposlenik> zaposlenici = null;
-        try {
-            zaposlenici = session.createQuery("from Zaposlenik z "
-                    + " where z.prezime=:prezime", Zaposlenik.class)
-                    .setParameter("prezime", entitet.getPrezime()).list();
+       List<Zaposlenik> zaposlenici = null;
+      try {
+           zaposlenici = session.createQuery("from Zaposlenik z "
+                 + " where z.prezime=:prezime", Zaposlenik.class)
+                   .setParameter("prezime", entitet.getPrezime()).list();
         } catch (Exception e) {
         }
         if (zaposlenici!= null && !zaposlenici.isEmpty()) {
@@ -290,4 +295,20 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
             throw new OtpremnaStanicaException("Zaposlenik sa istim radnim mjestom postoji u bazi");
         }
      }
+
+    private void kontrolaIMePrezime() {
+        
+        try {
+            kontrolaImePrezimeDuploUBazi();
+        } catch (OtpremnaStanicaException ex) {
+           
+        }
+    }
+
+    private void kontrolaImePrezimeDuploUBazi()throws OtpremnaStanicaException {
+    
+        
+    
+    }
+
 }
