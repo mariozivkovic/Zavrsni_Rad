@@ -40,6 +40,11 @@ public class Odrzavanje extends Entitet {
     public void setZaposlenik(Zaposlenik zaposlenik) {
         this.zaposlenik = zaposlenik;
     }
+
+    @Override
+    public String toString() {
+        return datum + ",  " +zaposlenik.getIme() + " " +  zaposlenik.getPrezime() + ", ";
+    }
 	
 	
 

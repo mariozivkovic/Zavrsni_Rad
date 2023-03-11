@@ -8,9 +8,12 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 import otpremnastanica.controller.ObradaPosao;
-import otpremnastanica.model.NaftnoPolje;
+import otpremnastanica.model.Busotina;
+
+
 
 import otpremnastanica.model.Posao;
+import otpremnastanica.model.PosaoBusotina;
 import otpremnastanica.util.Aplikacija;
 import otpremnastanica.util.OtpremnaStanicaException;
 
@@ -58,6 +61,8 @@ public class ProzorPosao extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtNaziv = new javax.swing.JTextField();
         btnDodaj = new javax.swing.JButton();
+        btnPromjeni = new javax.swing.JButton();
+        btnObrisi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,6 +82,12 @@ public class ProzorPosao extends javax.swing.JFrame {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
 
+        lstPodaci.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstPodaci.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstPodaciValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstPodaci);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -93,6 +104,26 @@ public class ProzorPosao extends javax.swing.JFrame {
             }
         });
 
+        btnPromjeni.setBackground(new java.awt.Color(37, 179, 213));
+        btnPromjeni.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnPromjeni.setForeground(new java.awt.Color(102, 102, 102));
+        btnPromjeni.setText("Promjeni");
+        btnPromjeni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPromjeniActionPerformed(evt);
+            }
+        });
+
+        btnObrisi.setBackground(new java.awt.Color(37, 179, 213));
+        btnObrisi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnObrisi.setForeground(new java.awt.Color(102, 102, 102));
+        btnObrisi.setText("Obriši");
+        btnObrisi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObrisiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -102,11 +133,18 @@ public class ProzorPosao extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(txtNaziv, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDodaj))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNaziv, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnObrisi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(btnDodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPromjeni, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,14 +152,18 @@ public class ProzorPosao extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNaziv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDodaj)))
-                .addGap(0, 40, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDodaj)
+                            .addComponent(btnPromjeni))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnObrisi))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -147,9 +189,70 @@ public class ProzorPosao extends javax.swing.JFrame {
     
     }//GEN-LAST:event_btnDodajActionPerformed
 
+    private void lstPodaciValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstPodaciValueChanged
+        if(evt.getValueIsAdjusting()){
+            return;
+        }
+        if(lstPodaci.getSelectedValue()==null){
+            return;
+        }
+        
+        obrada.setEntitet(lstPodaci.getSelectedValue());
+        
+        napuniView();
+    
+           
+    }//GEN-LAST:event_lstPodaciValueChanged
+
+    private void btnPromjeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromjeniActionPerformed
+       if(lstPodaci.getSelectedValue()==null){
+          JOptionPane.showMessageDialog(getRootPane(), "Prvo odaberite posao");
+          
+          return;
+      }
+      napuniModel();
+        try {
+            obrada.update();
+            ucitaj();
+        } catch (OtpremnaStanicaException ex) {
+        JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+        }
+    
+    }//GEN-LAST:event_btnPromjeniActionPerformed
+
+    private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
+         if(lstPodaci.getSelectedValue()==null){
+            JOptionPane.showMessageDialog(getRootPane(), "Prvo odaberite posao");
+            
+            return;
+        }
+        
+        if(JOptionPane.showConfirmDialog(getRootPane(), "Sigurno obrisati "
+        + obrada.getEntitet().getNaziv() + "?", "Brisanje", JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE)== JOptionPane.NO_OPTION){
+            return;
+        }
+        
+        try {
+            obrada.delete();
+            ucitaj();
+        } catch (OtpremnaStanicaException ex) {
+        JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+        }
+    }//GEN-LAST:event_btnObrisiActionPerformed
+     private void napuniView(){
+      var p = obrada.getEntitet();
+      txtNaziv.setText(p.getNaziv());
+      
+    
+   
+     
+     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodaj;
+    private javax.swing.JButton btnObrisi;
+    private javax.swing.JButton btnPromjeni;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

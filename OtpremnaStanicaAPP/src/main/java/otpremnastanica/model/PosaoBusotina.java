@@ -93,4 +93,11 @@ public class PosaoBusotina extends Entitet {
         this.tlakCasinga = tlakCasinga;
     }
 
+    @Override
+    public String toString() {
+        return odrzavanje +",  " +  busotina + ",  " + napomena + ",  "  + "P(t)-"+tlakTubinga + ", "  +"P(n)-"+ tlakNaftovoda + ",  " + 
+             "P(c)-" + tlakCasinga;
+    }
+
+    
 }

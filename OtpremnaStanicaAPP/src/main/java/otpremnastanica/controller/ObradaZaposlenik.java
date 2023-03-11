@@ -67,7 +67,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         kontrolaImeNijeBroj();
         kontrolaImeMinimalnaDuzina();
         kontrolaImeMaksimalnaDuzina();
-        kontrolaImeDuploUBazi();
+       
       
     }
 
@@ -105,26 +105,14 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         }
     }
 
-    private void kontrolaImeDuploUBazi() throws OtpremnaStanicaException {
-
-        List<Zaposlenik> zaposlenici = null;
-        try {
-            zaposlenici = session.createQuery("from Zaposlenik z "
-                    + " where z.ime=:ime", Zaposlenik.class)
-                    .setParameter("ime", entitet.getIme()).list();
-        } catch (Exception e) {
-        }
-        if (zaposlenici!= null && !zaposlenici.isEmpty()) {
-            throw new OtpremnaStanicaException("Zaposlenik sa istim imenom postoji u bazi");
-        }
-    }
+    
 
     private void kontrolaPrezime() throws OtpremnaStanicaException {
         kontrolaPrezimeNull();
         kontrolaPrezimeNijeBroj();
         kontrolaPrezimeMinimalnaDuzina();
         kontrolaPrezimeMaksimalnaDuzina();
-        kontrolaPrezimeDuploUBazi();
+        
     }
 
     private void kontrolaPrezimeNull() throws OtpremnaStanicaException {
@@ -161,19 +149,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         }
     }
 
-    private void kontrolaPrezimeDuploUBazi() throws OtpremnaStanicaException {
-
-       List<Zaposlenik> zaposlenici = null;
-      try {
-           zaposlenici = session.createQuery("from Zaposlenik z "
-                 + " where z.prezime=:prezime", Zaposlenik.class)
-                   .setParameter("prezime", entitet.getPrezime()).list();
-        } catch (Exception e) {
-        }
-        if (zaposlenici!= null && !zaposlenici.isEmpty()) {
-            throw new OtpremnaStanicaException("Zaposlenik sa istim prezimenom postoji u bazi");
-        }
-    }
+    
 
     private void kontrolaOib() throws OtpremnaStanicaException {
 

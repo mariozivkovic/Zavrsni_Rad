@@ -36,7 +36,11 @@ public class ObradaPosao extends Obrada<Posao>{
 
     @Override
     protected void kontrolaBrisanje() throws OtpremnaStanicaException {
-        
+         if(entitet.getPosloviBusotine()!=null && !entitet.getPosloviBusotine().isEmpty()){
+           
+            throw new OtpremnaStanicaException("Posao se ne može obrisati"
+                    + " jer ima podatke");
+        }
     }
     
      private void kontrolaNaziv() throws OtpremnaStanicaException  {
