@@ -31,7 +31,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         kontrolaOib();
         kontrolaEmail();
         kontrolaRadnoMjesto();
-        kontrolaIMePrezime();
+       
     }
 
     @Override
@@ -272,19 +272,6 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         }
      }
 
-    private void kontrolaIMePrezime() {
-        
-        try {
-            kontrolaImePrezimeDuploUBazi();
-        } catch (OtpremnaStanicaException ex) {
-           
-        }
-    }
-
-    private void kontrolaImePrezimeDuploUBazi()throws OtpremnaStanicaException {
-    
-        
-    
-    }
+  
 
 }

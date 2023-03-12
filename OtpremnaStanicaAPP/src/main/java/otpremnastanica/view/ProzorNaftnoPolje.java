@@ -253,7 +253,7 @@ public class ProzorNaftnoPolje extends javax.swing.JFrame {
       txtNaziv.setText(np.getNaziv());
       
       DefaultListModel<Busotina> m = new DefaultListModel<>();
-      int ukupno = 0;
+      
       if(np.getBusotine()!=null && !np.getBusotine().isEmpty()){
           m.addAll(np.getBusotine());
           }
