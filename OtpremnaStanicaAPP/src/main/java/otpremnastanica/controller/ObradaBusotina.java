@@ -6,6 +6,7 @@ package otpremnastanica.controller;
 
 import java.util.List;
 import otpremnastanica.model.Busotina;
+import otpremnastanica.model.NaftnoPolje;
 
 import otpremnastanica.util.OtpremnaStanicaException;
 
@@ -19,6 +20,13 @@ public class ObradaBusotina extends Obrada<Busotina> {
     public List<Busotina> read() {
 
         return session.createQuery("from Busotina", Busotina.class).list();
+    }
+      public List<Busotina> read(NaftnoPolje np) {
+
+        return session.createQuery("from Busotina"
+                + " where naftnoPolje=:naftnoPolje", Busotina.class)
+                .setParameter("naftnoPolje", np) .list();
+        
     }
 
     @Override

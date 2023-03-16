@@ -4,12 +4,15 @@
  */
 package otpremnastanica.view;
 
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import otpremnastanica.controller.ObradaZaposlenik;
+import otpremnastanica.model.Entitet;
 import otpremnastanica.model.Zaposlenik;
+import otpremnastanica.util.Alati;
 import otpremnastanica.util.Aplikacija;
 import otpremnastanica.util.OtpremnaStanicaException;
 
@@ -26,15 +29,32 @@ public class ProzorZaposlenik extends javax.swing.JFrame {
     public ProzorZaposlenik() {
         initComponents();
         obrada = new ObradaZaposlenik();
+        lstPodaci.setCellRenderer(new ZaposlenikRenderer());
         setTitle(Aplikacija.NAZIV_APP + ": " + 
                 Aplikacija.OPERATER.getImePrezime() + ": Zaposlenici");
-        ucitaj();
+        txtUvjet.requestFocus();
+       // ucitaj();
+    }
+    
+    
+    private void napuniView(){
+        var e = obrada.getEntitet();
+        txtIme.setText(e.getIme());
+        txtPrezime.setText(e.getPrezime());
+        txtOib.setText(e.getOib());
+        txtEmail.setText(e.getEmail());
+        txtRadnoMjesto.setText(e.getRadnoMjesto());
+        btnObrisi.setVisible(true);
+        if(!obrada.getEntitet().getOdrzavanja().isEmpty()){
+            btnObrisi.setVisible(false);
+        }
+        
     }
     
     private void ucitaj(){
         
         DefaultListModel<Zaposlenik> m = new DefaultListModel<>();
-        m.addAll(obrada.read());
+        m.addAll(obrada.read(txtUvjet.getText(), chbTraziOdPocetkaImena.isSelected()));
         lstPodaci.setModel(m);
         lstPodaci.repaint();
     }
@@ -62,10 +82,21 @@ public class ProzorZaposlenik extends javax.swing.JFrame {
         txtRadnoMjesto = new javax.swing.JTextField();
         btnDodaj = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        txtUvjet = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        chbTraziOdPocetkaImena = new javax.swing.JCheckBox();
+        btnPromjeni = new javax.swing.JButton();
+        btnObrisi = new javax.swing.JButton();
+        btnDovuciOib = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lstPodaci.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
+        lstPodaci.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstPodaciValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstPodaci);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -122,51 +153,120 @@ public class ProzorZaposlenik extends javax.swing.JFrame {
             .addGap(0, 27, Short.MAX_VALUE)
         );
 
+        txtUvjet.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
+        txtUvjet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUvjetActionPerformed(evt);
+            }
+        });
+        txtUvjet.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUvjetKeyPressed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(37, 179, 213));
+        jButton1.setForeground(new java.awt.Color(102, 102, 102));
+        jButton1.setText("🔍");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        chbTraziOdPocetkaImena.setText("Traži od početka imena");
+
+        btnPromjeni.setBackground(new java.awt.Color(37, 179, 213));
+        btnPromjeni.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnPromjeni.setForeground(new java.awt.Color(102, 102, 102));
+        btnPromjeni.setText("Promjeni");
+        btnPromjeni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPromjeniActionPerformed(evt);
+            }
+        });
+
+        btnObrisi.setBackground(new java.awt.Color(37, 179, 213));
+        btnObrisi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnObrisi.setForeground(new java.awt.Color(102, 102, 102));
+        btnObrisi.setText("Obriši");
+        btnObrisi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObrisiActionPerformed(evt);
+            }
+        });
+
+        btnDovuciOib.setBackground(new java.awt.Color(37, 179, 213));
+        btnDovuciOib.setForeground(new java.awt.Color(102, 102, 102));
+        btnDovuciOib.setText("O");
+        btnDovuciOib.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDovuciOibActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(27, 27, 27))
-                        .addComponent(txtIme, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addComponent(txtPrezime)
-                        .addComponent(jLabel2)
-                        .addComponent(txtOib)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel5)
-                        .addComponent(txtEmail)
-                        .addComponent(txtRadnoMjesto))
-                    .addComponent(btnDodaj))
-                .addContainerGap(36, Short.MAX_VALUE))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtUvjet, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addGap(0, 3, Short.MAX_VALUE))
+                    .addComponent(chbTraziOdPocetkaImena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnDodaj, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnPromjeni, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIme)
+                    .addComponent(txtPrezime)
+                    .addComponent(txtRadnoMjesto, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(btnObrisi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtOib)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDovuciOib))
+                    .addComponent(txtEmail))
+                .addGap(41, 41, 41))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtUvjet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chbTraziOdPocetkaImena))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPrezime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtOib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtOib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDovuciOib, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -176,8 +276,13 @@ public class ProzorZaposlenik extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtRadnoMjesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnDodaj)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDodaj)
+                            .addComponent(btnPromjeni))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnObrisi))
+                    .addComponent(jScrollPane1))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,24 +295,96 @@ public class ProzorZaposlenik extends javax.swing.JFrame {
         napuniModel();
         try {
             obrada.create();
+            txtUvjet.setText(obrada.getEntitet().getPrezime());
             ucitaj();
         } catch (OtpremnaStanicaException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
         }
     }//GEN-LAST:event_btnDodajActionPerformed
+
+    private void txtUvjetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUvjetActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUvjetActionPerformed
+
+    private void txtUvjetKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUvjetKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            ucitaj();
+        }
+    }//GEN-LAST:event_txtUvjetKeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       ucitaj();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnPromjeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromjeniActionPerformed
+         if(lstPodaci.getSelectedValue()==null){
+          JOptionPane.showMessageDialog(getRootPane(), "Prvo odaberite zaposlenika");
+          
+          return;
+      }
+      napuniModel();
+        try {
+            obrada.update();
+            txtUvjet.setText(obrada.getEntitet().getImePrezime());
+            ucitaj();
+        } catch (OtpremnaStanicaException ex) {
+        JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+        }
+    }//GEN-LAST:event_btnPromjeniActionPerformed
+
+    private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
+       if(lstPodaci.getSelectedValue()==null){
+            JOptionPane.showMessageDialog(getRootPane(), "Prvo odaberite zaposlenika");
+            
+            return;
+        }
+        
+        if(JOptionPane.showConfirmDialog(getRootPane(), "Sigurno obrisati "
+        + obrada.getEntitet().getImePrezime() + "?", "Brisanje", JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE)== JOptionPane.NO_OPTION){
+            return;
+        }
+        
+        try {
+            obrada.delete();
+            ucitaj();
+        } catch (OtpremnaStanicaException ex) {
+        JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+        }
+    }//GEN-LAST:event_btnObrisiActionPerformed
+
+    private void lstPodaciValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstPodaciValueChanged
+       if(evt.getValueIsAdjusting()){
+           return;
+       }
+       if(lstPodaci.getSelectedValue()==null){
+           return;
+       }
+       obrada.setEntitet(lstPodaci.getSelectedValue());
+       napuniView();
+    }//GEN-LAST:event_lstPodaciValueChanged
+
+    private void btnDovuciOibActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDovuciOibActionPerformed
+       txtOib.setText(Alati.dovuciOib());
+    }//GEN-LAST:event_btnDovuciOibActionPerformed
     
     private void napuniModel(){
-        var z = obrada.getEntitet();
-        z.setIme(txtIme.getText());
-        z.setPrezime(txtPrezime.getText());
-        z.setOib(txtOib.getText());
-        z.setEmail(txtEmail.getText());
-        z.setRadnoMjesto(txtRadnoMjesto.getText());
+        var e = obrada.getEntitet();
+        e.setIme(txtIme.getText());
+        e.setPrezime(txtPrezime.getText());
+        e.setOib(txtOib.getText());
+        e.setEmail(txtEmail.getText());
+        e.setRadnoMjesto(txtRadnoMjesto.getText());
     }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodaj;
+    private javax.swing.JButton btnDovuciOib;
+    private javax.swing.JButton btnObrisi;
+    private javax.swing.JButton btnPromjeni;
+    private javax.swing.JCheckBox chbTraziOdPocetkaImena;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -221,5 +398,6 @@ public class ProzorZaposlenik extends javax.swing.JFrame {
     private javax.swing.JTextField txtOib;
     private javax.swing.JTextField txtPrezime;
     private javax.swing.JTextField txtRadnoMjesto;
+    private javax.swing.JTextField txtUvjet;
     // End of variables declaration//GEN-END:variables
 }

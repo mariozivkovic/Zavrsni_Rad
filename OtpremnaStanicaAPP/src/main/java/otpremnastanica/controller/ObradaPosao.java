@@ -20,6 +20,37 @@ public class ObradaPosao extends Obrada<Posao>{
       
          return session.createQuery("from Posao order by naziv", Posao.class).list();
     }
+    public List<Posao> read(String uvjet) {
+        uvjet=uvjet.trim();
+        uvjet = "%" + uvjet + "%";
+       return session.createQuery("from Posao "
+               + " where concat(naziv) "
+               + " like :uvjet "
+               + " order by naziv ", 
+               Posao.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
+    
+     public List<Posao> read(String uvjet, 
+            boolean traziOdPocetkaImena) {
+        uvjet=uvjet.trim();
+        if(traziOdPocetkaImena){
+            uvjet = uvjet + "%";
+        }else{
+            uvjet = "%" + uvjet + "%";
+        }
+        
+       return session.createQuery("from Posao "
+               + " where concat(naziv) "
+               + " like :uvjet "
+               + " order by naziv", 
+               Posao.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
 
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {

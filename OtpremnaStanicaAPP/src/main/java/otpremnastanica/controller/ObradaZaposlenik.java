@@ -23,7 +23,38 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
 
         return session.createQuery("from Zaposlenik order by ime", Zaposlenik.class).list();
     }
-
+    
+    public List<Zaposlenik> read(String uvjet) {
+        uvjet=uvjet.trim();
+        uvjet = "%" + uvjet + "%";
+       return session.createQuery("from Zaposlenik "
+               + " where concat(ime,' ',prezime,' ',ime) "
+               + " like :uvjet "
+               + " order by prezime, ime ", 
+               Zaposlenik.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
+    
+     public List<Zaposlenik> read(String uvjet, 
+            boolean traziOdPocetkaImena) {
+        uvjet=uvjet.trim();
+        if(traziOdPocetkaImena){
+            uvjet = uvjet + "%";
+        }else{
+            uvjet = "%" + uvjet + "%";
+        }
+        
+       return session.createQuery("from Zaposlenik "
+               + " where concat(ime,' ',prezime,' ',ime) "
+               + " like :uvjet "
+               + " order by prezime, ime ", 
+               Zaposlenik.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
         kontrolaIme();
@@ -220,7 +251,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         kontrolaRadnoMjestoNijeBroj();
         kontrolaRadnoMjestoMinimalnaDuzina();
         kontrolaRadnoMjestoMaksimalnaDuzina();
-        kontrolaRadnoMjestoDuploUBazi();
+       
         
     }
 
@@ -258,19 +289,7 @@ public class ObradaZaposlenik extends Obrada<Zaposlenik> {
         }
     }
     
-     private void kontrolaRadnoMjestoDuploUBazi() throws OtpremnaStanicaException{
-         
-          List<Zaposlenik> zaposlenici = null;
-        try {
-            zaposlenici = session.createQuery("from Zaposlenik z "
-                    + " where z.radnoMjesto=:radnoMjesto", Zaposlenik.class)
-                    .setParameter("radnoMjesto", entitet.getRadnoMjesto()).list();
-        } catch (Exception e) {
-        }
-        if (zaposlenici!= null && !zaposlenici.isEmpty()) {
-            throw new OtpremnaStanicaException("Zaposlenik sa istim radnim mjestom postoji u bazi");
-        }
-     }
+     
 
   
 

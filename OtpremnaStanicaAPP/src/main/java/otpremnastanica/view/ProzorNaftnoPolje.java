@@ -35,8 +35,9 @@ public class ProzorNaftnoPolje extends javax.swing.JFrame {
     }
 
     private void ucitaj(){
-        
+       
         DefaultListModel<NaftnoPolje> m = new DefaultListModel<>();
+       
         m.addAll(obrada.read());
         lstPodaci.setModel(m);
         lstPodaci.repaint();
@@ -173,7 +174,7 @@ public class ProzorNaftnoPolje extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -249,23 +250,27 @@ public class ProzorNaftnoPolje extends javax.swing.JFrame {
     }//GEN-LAST:event_btnObrisiActionPerformed
 
   private void napuniView(){
-      var np = obrada.getEntitet();
-      txtNaziv.setText(np.getNaziv());
+      var e = obrada.getEntitet();
+      txtNaziv.setText(e.getNaziv());
       
       DefaultListModel<Busotina> m = new DefaultListModel<>();
-      
-      if(np.getBusotine()!=null && !np.getBusotine().isEmpty()){
-          m.addAll(np.getBusotine());
-          }
+     
+      if(e.getBusotine()!=null && !e.getBusotine().isEmpty()){
+        
+          m.addAll(e.getBusotine());
+      }
   
       
       lstBusotine.setModel(m);
       lstBusotine.repaint();
+      
      btnObrisi.setVisible(false);
-     if(np.getBusotine()==null || np.getBusotine().isEmpty()){
+     if(e.getBusotine()==null || e.getBusotine().isEmpty()){
          btnObrisi.setVisible(true);
+         
      }
   }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodaj;
