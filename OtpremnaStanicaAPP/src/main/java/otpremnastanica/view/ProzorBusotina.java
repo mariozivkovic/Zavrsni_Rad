@@ -4,13 +4,17 @@
  */
 package otpremnastanica.view;
 
+import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import otpremnastanica.controller.ObradaBusotina;
 import otpremnastanica.controller.ObradaNaftnoPolje;
 import otpremnastanica.model.Busotina;
 import otpremnastanica.model.NaftnoPolje;
+import otpremnastanica.util.Alati;
 import otpremnastanica.util.Aplikacija;
+import otpremnastanica.util.OtpremnaStanicaException;
 
 /**
  *
@@ -57,21 +61,27 @@ public class ProzorBusotina extends javax.swing.JFrame {
        
         m.addAll(obrada.read((NaftnoPolje)cmbFilterNaftnaPolja.getSelectedItem()));
         lstPodaci.setModel(m);
+       
         lstPodaci.repaint();
     }
-    private void napuniModel(){
-        var np = obrada.getEntitet();
-        np.setNaziv(txtNaziv.getText());
-        
-    
-    }  
+   
      private void napuniView(){
       var e = obrada.getEntitet();
       txtNaziv.setText(e.getNaziv());
+     
+      chbAktivna.setSelected(e.isAktivna());
+
       cmbNaftnaPolja.setSelectedItem(e.getNaftnoPolje());
       
      
      }
+     
+    
+
+
+
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -140,7 +150,9 @@ public class ProzorBusotina extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel2.setText("Naziv:");
+        jLabel2.setText("Naftno polje:");
+
+        cmbNaftnaPolja.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,11 +167,11 @@ public class ProzorBusotina extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
-                    .addComponent(txtNaziv)
                     .addComponent(chbAktivna, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(cmbNaftnaPolja, 0, 157, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmbNaftnaPolja, 0, 168, Short.MAX_VALUE)
+                    .addComponent(txtNaziv))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

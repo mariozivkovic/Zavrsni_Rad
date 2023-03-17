@@ -33,12 +33,12 @@
               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNaziv" max="32767" attributes="0"/>
                   <Component id="chbAktivna" alignment="0" min="-2" pref="127" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmbNaftnaPolja" alignment="0" pref="157" max="32767" attributes="0"/>
+                  <Component id="cmbNaftnaPolja" alignment="0" pref="168" max="32767" attributes="0"/>
+                  <Component id="txtNaziv" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="49" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -192,13 +192,20 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="66" green="66" red="66" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Naziv:"/>
+        <Property name="text" type="java.lang.String" value="Naftno polje:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbNaftnaPolja">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
+            <MatteColorBorder bottom="2" left="0" right="0" top="0">
+              <Color PropertyName="color" blue="87" green="87" red="87" type="rgb"/>
+            </MatteColorBorder>
+          </Border>
         </Property>
       </Properties>
       <AuxValues>

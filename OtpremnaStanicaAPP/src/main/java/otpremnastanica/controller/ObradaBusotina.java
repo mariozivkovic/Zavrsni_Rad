@@ -32,6 +32,8 @@ public class ObradaBusotina extends Obrada<Busotina> {
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
         kontrolaNaziv();
+        kontrolaNaftnoPolje();
+       
     }
 
     @Override
@@ -40,6 +42,8 @@ public class ObradaBusotina extends Obrada<Busotina> {
         kontrolaNazivNijeBroj();
         kontrolaNazivMinimalnaDuzina();
         kontrolaNazivMaksimalnaDuzina();
+        
+        kontrolaNaftnoPoljeNijeNull();
     }
 
     @Override
@@ -104,5 +108,21 @@ public class ObradaBusotina extends Obrada<Busotina> {
             throw new OtpremnaStanicaException("Bušotina sa istim nazivom postoji u bazi");
         }
     }
+
+    
+
+    private void kontrolaNaftnoPolje()throws OtpremnaStanicaException {
+        kontrolaNaftnoPoljeNijeNull();
+    }
+
+    private void kontrolaNaftnoPoljeNijeNull() throws OtpremnaStanicaException{
+        if(entitet.getNaftnoPolje().getSifra()==0){
+            throw new OtpremnaStanicaException("Obavezan odabir naftnog polja");
+        }
+    }
+
+    
+
+   
 
 }

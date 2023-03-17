@@ -10,6 +10,7 @@ import java.net.URL;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import otpremnastanica.model.Entitet;
 import us.codecraft.xsoup.Xsoup;
 /**
  *
@@ -73,6 +74,8 @@ public class Alati {
         }
         return true;
     }
-        }
-    
+  	
 
+
+
+}
