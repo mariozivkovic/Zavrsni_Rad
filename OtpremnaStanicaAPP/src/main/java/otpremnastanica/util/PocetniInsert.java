@@ -32,10 +32,10 @@ public class PocetniInsert {
     
     
     private static final int BROJ_ZAPOSLENIKA =100;
-    private static final int BROJ_POSLOVA =5000;
+    private static final int BROJ_POSLOVA =10;
     private static final int BROJ_NAFTNIH_POLJA = 10;
     private static final int BROJ_BUSOTINA =300;
-    private static final int BROJ_ODRZAVANJA =16800;
+    private static final int BROJ_ODRZAVANJA =16;
     private static final int BROJ_POSLOVA_BUSOTINA =10000;
     
     
