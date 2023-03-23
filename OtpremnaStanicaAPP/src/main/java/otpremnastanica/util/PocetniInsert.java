@@ -31,7 +31,7 @@ import otpremnastanica.model.Zaposlenik;
 public class PocetniInsert {
     
     
-    private static final int BROJ_ZAPOSLENIKA =100;
+    private static final int BROJ_ZAPOSLENIKA =10;
     private static final int BROJ_POSLOVA =10;
     private static final int BROJ_NAFTNIH_POLJA = 10;
     private static final int BROJ_BUSOTINA =300;

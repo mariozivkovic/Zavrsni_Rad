@@ -25,14 +25,16 @@ public class ObradaBusotina extends Obrada<Busotina> {
 
         return session.createQuery("from Busotina"
                 + " where naftnoPolje=:naftnoPolje", Busotina.class)
-                .setParameter("naftnoPolje", np) .list();
+                .setParameter("naftnoPolje", np).list();
         
     }
 
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
         kontrolaNaziv();
-        kontrolaNaftnoPolje();
+            if(entitet.getNaftnoPolje().getSifra()==0){
+            throw new OtpremnaStanicaException("Obavezan odabir naftnog polja");
+        }
        
     }
 
@@ -43,12 +45,16 @@ public class ObradaBusotina extends Obrada<Busotina> {
         kontrolaNazivMinimalnaDuzina();
         kontrolaNazivMaksimalnaDuzina();
         
-        kontrolaNaftnoPoljeNijeNull();
+       
     }
 
     @Override
     protected void kontrolaBrisanje() throws OtpremnaStanicaException {
-
+     //   if(entitet.getNaftnoPolje()!=null && !entitet.getNaftnoPolje().getNaziv().isEmpty()){
+           
+      //      throw new OtpremnaStanicaException("Bušotina se ne može obrisati"
+        //            + " jer ima naftno polje");
+      //  }
     }
 
     private void kontrolaNaziv() throws OtpremnaStanicaException {
@@ -84,7 +90,7 @@ public class ObradaBusotina extends Obrada<Busotina> {
 
     private void kontrolaNazivMinimalnaDuzina() throws OtpremnaStanicaException {
         if (entitet.getNaziv().trim().length() < 3) {
-            throw new OtpremnaStanicaException("Naziv naftnog bušotine mora imati minimalno 3 znaka");
+            throw new OtpremnaStanicaException("Naziv bušotine mora imati minimalno 3 znaka");
         }
     }
 
@@ -110,19 +116,5 @@ public class ObradaBusotina extends Obrada<Busotina> {
     }
 
     
-
-    private void kontrolaNaftnoPolje()throws OtpremnaStanicaException {
-        kontrolaNaftnoPoljeNijeNull();
-    }
-
-    private void kontrolaNaftnoPoljeNijeNull() throws OtpremnaStanicaException{
-        if(entitet.getNaftnoPolje().getSifra()==0){
-            throw new OtpremnaStanicaException("Obavezan odabir naftnog polja");
-        }
-    }
-
-    
-
-   
 
 }

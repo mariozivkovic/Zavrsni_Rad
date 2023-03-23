@@ -88,4 +88,8 @@ public class Zaposlenik extends Entitet {
         public String getImePrezime(){
             return ime + " " + prezime;
         }
+        
+         public String setImePrezime(){
+        return ime + " " + prezime;
+    }
 }

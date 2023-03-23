@@ -7,6 +7,7 @@ package otpremnastanica.controller;
 import java.util.List;
 
 import otpremnastanica.model.Odrzavanje;
+import otpremnastanica.model.Zaposlenik;
 import otpremnastanica.util.OtpremnaStanicaException;
 
 /**
@@ -20,6 +21,44 @@ public class ObradaOdrzavanje extends Obrada<Odrzavanje> {
 
         return session.createQuery("from Odrzavanje", Odrzavanje.class).list();
     }
+     public List<Odrzavanje> read(Zaposlenik z) {
+
+        return session.createQuery("from Odrzavanje"
+                + " where zaposlenik=:zaposlenik", Odrzavanje.class)
+                .setParameter("zaposlenik", z).list();
+        
+    }
+     public List<Odrzavanje> read(String uvjet) {
+        uvjet=uvjet.trim();
+        uvjet = "%" + uvjet + "%";
+       return session.createQuery("from Odrzavanje "
+               + " where concat(datum,' ', zaposlenik) "
+               + " like :uvjet "
+               + " order by datum desc ", 
+               Odrzavanje.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
+       public List<Odrzavanje> read(String uvjet, 
+            boolean traziOdPocetkaDatuma) {
+        uvjet=uvjet.trim();
+        if(traziOdPocetkaDatuma){
+            uvjet = uvjet + "%";
+        }else{
+            uvjet = "%" + uvjet + "%";
+        }
+        
+       return session.createQuery("from Odrzavanje "
+               + " where concat(datum,' ', zaposlenik) "
+               + " like :uvjet "
+               + " order by datum desc ", 
+               Odrzavanje.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
+    
 
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {

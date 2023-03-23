@@ -6,6 +6,7 @@ package otpremnastanica;
 
 
 
+import otpremnastanica.util.HibernateUtil;
 import otpremnastanica.util.PocetniInsert;
 import otpremnastanica.view.SplashScreen;
 
@@ -22,10 +23,10 @@ public class Start {
 
     public static void main(String[] args) {
        
-      new SplashScreen().setVisible(true);
+    new SplashScreen().setVisible(true);
        
        
-     
+       // new PocetniInsert();
      
         
         }

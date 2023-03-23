@@ -3,6 +3,7 @@ package otpremnastanica.model;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,9 @@ public class Odrzavanje extends Entitet {
 	private Date datum;
     @ManyToOne
 	private Zaposlenik zaposlenik;
+    
+    @OneToMany(mappedBy = "odrzavanje")
+    private List<PosaoBusotina> posloviBušotine = new ArrayList<>();
     
     public Odrzavanje(){
         super();
@@ -41,11 +45,22 @@ public class Odrzavanje extends Entitet {
         this.zaposlenik = zaposlenik;
     }
 
+    public List<PosaoBusotina> getPosloviBušotine() {
+        return posloviBušotine;
+    }
+
+    public void setPosloviBušotine(List<PosaoBusotina> posloviBušotine) {
+        this.posloviBušotine = posloviBušotine;
+    }
+    
+
     @Override
     public String toString() {
-        return datum + ",  " +zaposlenik.getIme() + " " +  zaposlenik.getPrezime() + ", ";
+        return datum + ",  " + zaposlenik.getIme() + " " +  zaposlenik.getPrezime();
     }
 	
-	
+	public String getDatumZaposlenik(){
+            return getDatum() + " " + getZaposlenik();
+        }
 
 }
