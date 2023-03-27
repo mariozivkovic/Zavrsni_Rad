@@ -59,8 +59,6 @@ public class Odrzavanje extends Entitet {
         return datum + ",  " + zaposlenik.getIme() + " " +  zaposlenik.getPrezime();
     }
 	
-	public String getDatumZaposlenik(){
-            return getDatum() + " " + getZaposlenik();
-        }
+	
 
 }

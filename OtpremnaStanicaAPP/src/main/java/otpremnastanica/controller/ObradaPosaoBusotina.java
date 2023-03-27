@@ -6,6 +6,9 @@ package otpremnastanica.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import otpremnastanica.model.Busotina;
+import otpremnastanica.model.Odrzavanje;
+import otpremnastanica.model.Posao;
 
 import otpremnastanica.model.PosaoBusotina;
 import otpremnastanica.util.OtpremnaStanicaException;
@@ -22,12 +25,61 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
         return session.createQuery("from PosaoBusotina", PosaoBusotina.class).list();
     }
 
+    public List<PosaoBusotina> read(Odrzavanje o) {
+
+        return session.createQuery("from PosaoBusotina"
+                + " where odrzavanje=:odrzavanje", PosaoBusotina.class)
+                .setParameter("odrzavanje", o).list();
+        
+    }
+     public List<PosaoBusotina> read(Posao p) {
+
+        return session.createQuery("from PosaoBusotina"
+                + " where posao=:posao", PosaoBusotina.class)
+                .setParameter("posao", p).list();
+        
+    }
+     public List<PosaoBusotina> read(String uvjet) {
+        uvjet=uvjet.trim();
+        uvjet = "%" + uvjet + "%";
+       return session.createQuery("from PosaoBusotina "
+               + " where concat(odrzavanje,' ',posao) "
+               + " like :uvjet "
+               + " order by napomena ", 
+               PosaoBusotina.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
+      public List<PosaoBusotina> read(String uvjet, 
+            boolean traziOdPocetkaDatuma) {
+        uvjet=uvjet.trim();
+        if(traziOdPocetkaDatuma){
+            uvjet = uvjet + "%";
+        }else{
+            uvjet = "%" + uvjet + "%";
+        }
+        
+       return session.createQuery("from PosaoBusotina "
+               + " where concat(odrzavanje) "
+               + " like :uvjet "
+               + " order by odrzavanje ", 
+               PosaoBusotina.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+      }
+  
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
         kontrolaNapomena();
         kontrolaTlakTubinga();
         kontrolaTlakNaftovoda();
         kontrolaTlakCasinga();
+        
+         if(entitet.getPosao().getSifra()==0){
+            throw new OtpremnaStanicaException("Obavezan odabir posla");
+         }
     }
 
     @Override

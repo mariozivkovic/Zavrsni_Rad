@@ -28,7 +28,18 @@ public class ObradaBusotina extends Obrada<Busotina> {
                 .setParameter("naftnoPolje", np).list();
         
     }
-
+       public List<Busotina> read(String uvjet) {
+        uvjet=uvjet.trim();
+        uvjet = "%" + uvjet + "%";
+       return session.createQuery("from Busotina "
+               + " where concat(naziv) "
+               + " like :uvjet "
+               + " order by naziv desc ", 
+               Busotina.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+       }
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
         kontrolaNaziv();

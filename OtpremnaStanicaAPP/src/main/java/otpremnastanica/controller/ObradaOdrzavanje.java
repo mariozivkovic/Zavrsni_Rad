@@ -62,7 +62,14 @@ public class ObradaOdrzavanje extends Obrada<Odrzavanje> {
 
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
-
+        
+        if(entitet.getDatum()==null){
+            throw new OtpremnaStanicaException("Niste unijeli datum");
+        }
+        
+         if(entitet.getZaposlenik().getSifra()==0){
+            throw new OtpremnaStanicaException("Obavezan odabir zaposlenika");
+         }
     }
 
     @Override

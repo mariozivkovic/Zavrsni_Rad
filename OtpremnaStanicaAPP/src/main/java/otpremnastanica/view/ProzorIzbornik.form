@@ -95,6 +95,12 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Podaci"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem7ActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
+              </AuxValues>
             </MenuItem>
           </SubComponents>
         </Menu>
