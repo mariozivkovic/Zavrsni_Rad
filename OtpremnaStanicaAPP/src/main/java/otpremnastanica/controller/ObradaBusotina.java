@@ -61,11 +61,7 @@ public class ObradaBusotina extends Obrada<Busotina> {
 
     @Override
     protected void kontrolaBrisanje() throws OtpremnaStanicaException {
-     //   if(entitet.getNaftnoPolje()!=null && !entitet.getNaftnoPolje().getNaziv().isEmpty()){
-           
-      //      throw new OtpremnaStanicaException("Bušotina se ne može obrisati"
-        //            + " jer ima naftno polje");
-      //  }
+      
     }
 
     private void kontrolaNaziv() throws OtpremnaStanicaException {

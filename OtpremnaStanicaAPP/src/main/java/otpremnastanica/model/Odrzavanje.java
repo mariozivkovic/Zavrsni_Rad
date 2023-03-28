@@ -15,7 +15,7 @@ public class Odrzavanje extends Entitet {
 	private Zaposlenik zaposlenik;
     
     @OneToMany(mappedBy = "odrzavanje")
-    private List<PosaoBusotina> posloviBušotine = new ArrayList<>();
+    private List<PosaoBusotina> posloviBusotine = new ArrayList<>();
     
     public Odrzavanje(){
         super();
@@ -45,12 +45,12 @@ public class Odrzavanje extends Entitet {
         this.zaposlenik = zaposlenik;
     }
 
-    public List<PosaoBusotina> getPosloviBušotine() {
-        return posloviBušotine;
+    public List<PosaoBusotina> getPosloviBusotine() {
+        return posloviBusotine;
     }
 
-    public void setPosloviBušotine(List<PosaoBusotina> posloviBušotine) {
-        this.posloviBušotine = posloviBušotine;
+    public void setPosloviBusotine(List<PosaoBusotina> posloviBusotine) {
+        this.posloviBusotine = posloviBusotine;
     }
     
 

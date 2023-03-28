@@ -73,8 +73,9 @@ public class ProzorBusotina extends javax.swing.JFrame {
       chbAktivna.setSelected(e.isAktivna());
 
       cmbNaftnaPolja.setSelectedItem(e.getNaftnoPolje());
-      
-     
+      btnObrisi.setVisible(false);
+     if(obrada.getEntitet().getPosloviBušotine().isEmpty())
+     btnObrisi.setVisible(true);
      }
      
     

@@ -23,6 +23,7 @@ import otpremnastanica.controller.ObradaOdrzavanje;
 import otpremnastanica.controller.ObradaPosao;
 import otpremnastanica.controller.ObradaPosaoBusotina;
 import otpremnastanica.model.Busotina;
+import otpremnastanica.model.NaftnoPolje;
 import otpremnastanica.model.Odrzavanje;
 import otpremnastanica.model.Posao;
 import otpremnastanica.model.PosaoBusotina;
@@ -40,7 +41,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
         private ObradaPosao obradaPosao;
         private DecimalFormat df;
         private ObradaOdrzavanje obradaOdrzavanje;
-        private ObradaBusotina obradaBusotina;
+        
     /**
      * Creates new form ProzorPodaci
      */
@@ -48,19 +49,28 @@ public class ProzorPodaci extends javax.swing.JFrame{
         initComponents();
         obrada = new ObradaPosaoBusotina();
         obradaOdrzavanje = new ObradaOdrzavanje();
-        obradaBusotina = new ObradaBusotina();
+       
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("hr", "HR"));
         df = new DecimalFormat("###,##0.00",dfs);
 
          setTitle(Aplikacija.NAZIV_APP + ": " + 
                 Aplikacija.OPERATER.getImePrezime() + ": Podaci");
          txtUvjet.requestFocus();
-       
+         ucitajBusotine();
          ucitajPoslove();
          ucitaj();
     }
-   
-    private void ucitajPoslove(){
+    private void ucitajBusotine(){
+        DefaultComboBoxModel<Busotina> m = new DefaultComboBoxModel<>();
+        Busotina b = new Busotina();
+        b.setSifra(0);
+        b.setNaziv("Nije odabrano");
+        m.addElement(b);
+        m.addAll(new ObradaBusotina().read());
+        cmbBusotine.setModel(m);
+        cmbBusotine.repaint();
+    }
+   private void ucitajPoslove(){
          DefaultComboBoxModel<Posao> m
                 = new DefaultComboBoxModel<>();
          Posao p = new Posao();
@@ -71,10 +81,12 @@ public class ProzorPodaci extends javax.swing.JFrame{
          cmbPosao.setModel(m);
          cmbPosao.repaint();
     }
+ 
     private void napuniModel(){
          var e = obrada.getEntitet();
          
         e.setPosao((Posao)cmbPosao.getSelectedItem());
+        e.setBusotina((Busotina)cmbBusotine.getSelectedItem());
         e.setNapomena(txtNapomena.getText());
             try {
                 e.setTlakTubinga(BigDecimal.valueOf(df.parse
@@ -95,7 +107,8 @@ public class ProzorPodaci extends javax.swing.JFrame{
                 e.setTlakCasinga(BigDecimal.ZERO);
             }
              
-        List<Odrzavanje> odrzavanja = new ArrayList<>();
+          List<Odrzavanje> odrzavanja = new ArrayList<>();
+        
            try {
             DefaultListModel<Odrzavanje> m = (DefaultListModel<Odrzavanje>) lstOdrzavanjaUPodacima1.getModel();
             for(int i=0;i<m.getSize();i++){
@@ -104,24 +117,16 @@ public class ProzorPodaci extends javax.swing.JFrame{
         } catch (Exception ex) {
             
         }
-     //   e.setOdrzavanje(odrzavanja);
+        e.setOdrzavanje((Odrzavanje) odrzavanja);
         
-         List<Busotina> busotine = new ArrayList<>();
-           try {
-            DefaultListModel<Busotina> m = (DefaultListModel<Busotina>) lstBusotineUPodacima.getModel();
-            for(int i=0;i<m.getSize();i++){
-                busotine.add(m.getElementAt(i));
-            }
-        } catch (Exception ex) {
-            
-        }
-     //   e.setBusotina(busotine);
+        
     
        
      }
      private void napuniView(){
            var e = obrada.getEntitet();
          cmbPosao.setSelectedItem(e.getPosao());
+         cmbBusotine.setSelectedItem(e.getBusotina());
          txtNapomena.setText(e.getNapomena());
          try {
              txtTlakTubinga.setText(df.format(e.getTlakTubinga()));
@@ -150,16 +155,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
          lstOdrzavanjaUPodacima1.setModel(m);
          lstOdrzavanjaUPodacima1.repaint();
          
-         DefaultListModel<Busotina> b = new DefaultListModel<>();
         
-        if(e.getBusotina()!=null){
-            b.addElement(e.getBusotina());
-        }
-        
-         
-      
-         lstBusotineUPodacima.setModel(b);
-         lstBusotineUPodacima.repaint();
      
     } 
 
@@ -195,10 +191,6 @@ public class ProzorPodaci extends javax.swing.JFrame{
         txtTlakCasinga = new javax.swing.JTextField();
         cmbPosao = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        lstBusotineUPodacima = new javax.swing.JList<>();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        lstBusotineUBazi = new javax.swing.JList<>();
         txtUvjet1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
@@ -209,13 +201,9 @@ public class ProzorPodaci extends javax.swing.JFrame{
         lstOdrzavanjaUPodacima1 = new javax.swing.JList<>();
         jScrollPane5 = new javax.swing.JScrollPane();
         lstOdrzavanjaUBazi1 = new javax.swing.JList<>();
-        txtUvjet2 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        btnDodajBusotine1 = new javax.swing.JButton();
-        btnObrišiBusotine1 = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         btnDodaj = new javax.swing.JButton();
+        cmbBusotine = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -300,10 +288,6 @@ public class ProzorPodaci extends javax.swing.JFrame{
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
         jLabel5.setText("Posao:");
 
-        jScrollPane2.setViewportView(lstBusotineUPodacima);
-
-        jScrollPane3.setViewportView(lstBusotineUBazi);
-
         txtUvjet1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
         txtUvjet1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -351,49 +335,6 @@ public class ProzorPodaci extends javax.swing.JFrame{
 
         jScrollPane5.setViewportView(lstOdrzavanjaUBazi1);
 
-        txtUvjet2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
-        txtUvjet2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUvjet2ActionPerformed(evt);
-            }
-        });
-        txtUvjet2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtUvjet2KeyPressed(evt);
-            }
-        });
-
-        jButton2.setBackground(new java.awt.Color(37, 179, 213));
-        jButton2.setForeground(new java.awt.Color(102, 102, 102));
-        jButton2.setText("🔍");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        btnDodajBusotine1.setText("<<");
-        btnDodajBusotine1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDodajBusotine1ActionPerformed(evt);
-            }
-        });
-
-        btnObrišiBusotine1.setText(">>");
-        btnObrišiBusotine1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnObrišiBusotine1ActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel8.setText("Bušotine u podacima:");
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel9.setText("Bušotine u bazi:");
-
         btnDodaj.setBackground(new java.awt.Color(37, 179, 213));
         btnDodaj.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDodaj.setForeground(new java.awt.Color(102, 102, 102));
@@ -404,75 +345,60 @@ public class ProzorPodaci extends javax.swing.JFrame{
             }
         });
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel8.setText("Busotina:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnDodajBusotine1)
-                                    .addComponent(btnObrišiBusotine1, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtUvjet2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2))
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(chbTraziOdPocetkaDatuma, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtUvjet, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnTrazi)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(58, 58, 58)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtTlakCasinga, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                                .addComponent(txtTlakNaftovoda, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtTlakTubinga, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(txtNapomena)
-                            .addComponent(cmbPosao, 0, 197, Short.MAX_VALUE)
-                            .addComponent(btnDodaj))))
-                .addGap(18, 21, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(chbTraziOdPocetkaDatuma, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(txtUvjet, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btnTrazi)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel5)
+                        .addComponent(txtTlakCasinga)
+                        .addComponent(txtTlakNaftovoda)
+                        .addComponent(txtTlakTubinga)
+                        .addComponent(txtNapomena)
+                        .addComponent(cmbPosao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDodaj)
+                        .addComponent(cmbBusotine, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(90, 90, 90))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnDodajOdrzavanje)
-                            .addComponent(btnObrišiOdržavanje))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDodajOdrzavanje)
+                    .addComponent(btnObrišiOdržavanje))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtUvjet1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -481,79 +407,60 @@ public class ProzorPodaci extends javax.swing.JFrame{
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtUvjet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnTrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chbTraziOdPocetkaDatuma)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbPosao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNapomena, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTlakTubinga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTlakNaftovoda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTlakCasinga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnDodaj)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(216, 216, 216))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtUvjet2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnDodajBusotine1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnObrišiBusotine1)))
-                                .addGap(19, 19, 19))))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtUvjet1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane5)
-                                .addGap(357, 357, 357))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane5))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
                                 .addComponent(btnDodajOdrzavanje)
                                 .addGap(27, 27, 27)
                                 .addComponent(btnObrišiOdržavanje)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane4))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtUvjet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chbTraziOdPocetkaDatuma)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbPosao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmbBusotine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNapomena, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTlakTubinga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTlakNaftovoda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTlakCasinga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDodaj)))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -656,72 +563,6 @@ public class ProzorPodaci extends javax.swing.JFrame{
     
     }//GEN-LAST:event_btnObrišiOdržavanjeActionPerformed
 
-    private void txtUvjet2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUvjet2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUvjet2ActionPerformed
-
-    private void txtUvjet2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUvjet2KeyPressed
-         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-             ucitajBusotine();
-        }
-    }//GEN-LAST:event_txtUvjet2KeyPressed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ucitajBusotine();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void btnDodajBusotine1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajBusotine1ActionPerformed
-         if(lstBusotineUBazi.getSelectedValuesList()==null
-                || lstBusotineUBazi.getSelectedValuesList().isEmpty()){
-            JOptionPane.showMessageDialog(getRootPane(),
-                    "Prvo pronađite bušotine");
-            return;
-        }
-        
-          if(lstBusotineUPodacima.getModel()==null || 
-                  !(lstBusotineUPodacima.getModel() instanceof DefaultListModel<Busotina>)){
-            lstBusotineUPodacima.setModel(new DefaultListModel<Busotina>());
-        }
-        
-        DefaultListModel<Busotina> m = 
-                (DefaultListModel<Busotina>) lstBusotineUPodacima.getModel();
-        
-        DefaultListModel<Busotina> busotine = 
-                (DefaultListModel<Busotina>) lstBusotineUPodacima.getModel();
-        boolean postoji;
-        for(Busotina bub : lstBusotineUBazi.getSelectedValuesList()){
-            postoji=false;
-            for(int i=0;i<busotine.getSize();i++){
-                if(bub.getSifra()==busotine.get(i).getSifra()){
-                    postoji=true;
-                    break;
-                }
-            }
-            if(!postoji){
-                 busotine.addElement(bub);
-            }
-        }
-        lstBusotineUPodacima.repaint();
-      
-    }//GEN-LAST:event_btnDodajBusotine1ActionPerformed
-
-    private void btnObrišiBusotine1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrišiBusotine1ActionPerformed
-       if(lstBusotineUPodacima.getSelectedValuesList()==null
-                || lstBusotineUPodacima.getSelectedValuesList().isEmpty()){
-            JOptionPane.showMessageDialog(getRootPane(),
-                    "Prvo odaberite bušotine u podacima");
-            return;
-        }
-        
-        DefaultListModel<Busotina> m = 
-                (DefaultListModel<Busotina>) lstBusotineUPodacima.getModel();
-        
-        for(Busotina b : lstBusotineUPodacima.getSelectedValuesList()){
-            m.removeElement(b);
-        }
-        lstBusotineUPodacima.repaint();
-    }//GEN-LAST:event_btnObrišiBusotine1ActionPerformed
-
     private void btnDodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajActionPerformed
        obrada.setEntitet(new PosaoBusotina());
        napuniModel();
@@ -733,12 +574,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
             }
     }//GEN-LAST:event_btnDodajActionPerformed
     
-    private void ucitajBusotine(){
-          DefaultListModel<Busotina> m= new DefaultListModel<>();
-        m.addAll(obradaBusotina.read(txtUvjet2.getText().trim()));
-        lstBusotineUBazi.setModel(m);
-        lstBusotineUBazi.repaint();
-    }
+   
     private void ucitajOdrzavanja(){
         DefaultListModel<Odrzavanje> m = new DefaultListModel<>();
         m.addAll(obradaOdrzavanje.read(txtUvjet1.getText().trim()));
@@ -752,15 +588,13 @@ public class ProzorPodaci extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodaj;
-    private javax.swing.JButton btnDodajBusotine1;
     private javax.swing.JButton btnDodajOdrzavanje;
-    private javax.swing.JButton btnObrišiBusotine1;
     private javax.swing.JButton btnObrišiOdržavanje;
     private javax.swing.JButton btnTrazi;
     private javax.swing.JCheckBox chbTraziOdPocetkaDatuma;
+    private javax.swing.JComboBox<Busotina> cmbBusotine;
     private javax.swing.JComboBox<Posao> cmbPosao;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -769,15 +603,10 @@ public class ProzorPodaci extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JList<Busotina> lstBusotineUBazi;
-    private javax.swing.JList<Busotina> lstBusotineUPodacima;
     private javax.swing.JList<Odrzavanje> lstOdrzavanjaUBazi1;
     private javax.swing.JList<Odrzavanje> lstOdrzavanjaUPodacima1;
     private javax.swing.JList<PosaoBusotina> lstPodaci;
@@ -787,6 +616,5 @@ public class ProzorPodaci extends javax.swing.JFrame{
     private javax.swing.JTextField txtTlakTubinga;
     private javax.swing.JTextField txtUvjet;
     private javax.swing.JTextField txtUvjet1;
-    private javax.swing.JTextField txtUvjet2;
     // End of variables declaration//GEN-END:variables
 }

@@ -61,7 +61,10 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
         }
         
        cmbZaposlenici.setSelectedItem(e.getZaposlenik());
-        
+       btnObrisi.setVisible(false);
+        if(obrada.getEntitet().getPosloviBusotine().isEmpty()){
+            btnObrisi.setVisible(true);
+        }
     }
     private void ucitajZaposlenike(){
         
@@ -337,6 +340,8 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPromjeniActionPerformed
 
     private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
+        
+        
         if(lstPodaci.getSelectedValue()==null){
             JOptionPane.showMessageDialog(getRootPane(), "Prvo odaberite održavanje");
 

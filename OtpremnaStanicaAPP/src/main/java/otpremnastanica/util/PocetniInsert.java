@@ -33,10 +33,10 @@ public class PocetniInsert {
     
     private static final int BROJ_ZAPOSLENIKA =10;
     private static final int BROJ_POSLOVA =10;
-    private static final int BROJ_NAFTNIH_POLJA = 10;
-    private static final int BROJ_BUSOTINA =300;
+    private static final int BROJ_NAFTNIH_POLJA = 4;
+    private static final int BROJ_BUSOTINA =40;
     private static final int BROJ_ODRZAVANJA =16;
-    private static final int BROJ_POSLOVA_BUSOTINA =10000;
+    private static final int BROJ_POSLOVA_BUSOTINA =500;
     
     
     
@@ -148,6 +148,7 @@ public class PocetniInsert {
     private void kreirajPosloviBusotine() {
              
              PosaoBusotina pb;
+            
              for(int i =0;i<BROJ_POSLOVA_BUSOTINA;i++){
                  pb = new PosaoBusotina();
                  pb.setPosao(poslovi.get(sb(0, BROJ_POSLOVA-1)));
@@ -157,6 +158,7 @@ public class PocetniInsert {
                  pb.setTlakTubinga(new BigDecimal(faker.number().randomDouble(2, 8, 15)));
                  pb.setTlakNaftovoda(new BigDecimal(faker.number().randomDouble(2, 8, 15)));
                  pb.setTlakCasinga(new BigDecimal(faker.number().randomDouble(2, 10, 50)));
+               
                  
                  session.persist(pb);
                  posloviBusotine.add(pb);

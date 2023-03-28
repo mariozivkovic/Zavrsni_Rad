@@ -24,6 +24,13 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
 
         return session.createQuery("from PosaoBusotina", PosaoBusotina.class).list();
     }
+     public List<PosaoBusotina> read(Busotina b) {
+
+        return session.createQuery("from PosaoBusotina"
+                + " where busotina=:busotina", PosaoBusotina.class)
+                .setParameter("busotina", b).list();
+        
+    }
 
     public List<PosaoBusotina> read(Odrzavanje o) {
 

@@ -37,6 +37,8 @@ public class PosaoBusotina extends Entitet {
         this.tlakCasinga = tlakCasinga;
     }
 
+   
+
     public Odrzavanje getOdrzavanje() {
         return odrzavanje;
     }
@@ -45,6 +47,7 @@ public class PosaoBusotina extends Entitet {
         this.odrzavanje = odrzavanje;
     }
 
+  
     public Posao getPosao() {
         return posao;
     }

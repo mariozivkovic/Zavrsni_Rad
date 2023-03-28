@@ -25,6 +25,7 @@ public class Start {
        
     new SplashScreen().setVisible(true);
        
+     
        
        // new PocetniInsert();
      

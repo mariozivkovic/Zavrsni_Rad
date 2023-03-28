@@ -2,6 +2,7 @@ package otpremnastanica.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +13,14 @@ public class Busotina extends Entitet {
 	private boolean aktivna;
         @ManyToOne
 	private NaftnoPolje naftnoPolje;
+        @OneToMany (mappedBy = "busotina")
+         private List<PosaoBusotina> posloviBušotine = new ArrayList<>();
     
     public Busotina(){
         super();
     }
 
-    public Busotina(String naziv, boolean aktivna, NaftnoPolje naftnoPolje, int sifra) {
+    public Busotina(int sifra,String naziv, boolean aktivna, NaftnoPolje naftnoPolje) {
         super(sifra);
         this.naziv = naziv;
         this.aktivna = aktivna;
@@ -50,9 +53,17 @@ public class Busotina extends Entitet {
         this.naftnoPolje = naftnoPolje;
     }
 
+    public List<PosaoBusotina> getPosloviBušotine() {
+        return posloviBušotine;
+    }
+
+    public void setPosloviBušotine(List<PosaoBusotina> posloviBušotine) {
+        this.posloviBušotine = posloviBušotine;
+    }
+
     @Override
     public String toString() {
-        return naziv + ", " + naftnoPolje;
+        return naziv ;
     }
 
 	
