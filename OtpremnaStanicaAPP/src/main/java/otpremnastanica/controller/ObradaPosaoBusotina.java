@@ -78,10 +78,10 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
         
        return session.createQuery("from PosaoBusotina "
                + " where concat(odrzavanje) "
-               + " like :uvjet "
+               + " like :datum "
                + " order by odrzavanje ", 
                PosaoBusotina.class)
-               .setParameter("uvjet", uvjet)
+               .setParameter("datum", uvjet)
                .setMaxResults(12)
                .list();
       }
