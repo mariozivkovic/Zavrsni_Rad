@@ -5,12 +5,16 @@
 package otpremnastanica.controller;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import otpremnastanica.model.Busotina;
 import otpremnastanica.model.Odrzavanje;
 import otpremnastanica.model.Posao;
 
 import otpremnastanica.model.PosaoBusotina;
+import otpremnastanica.model.Zaposlenik;
 import otpremnastanica.util.OtpremnaStanicaException;
 
 /**
@@ -22,10 +26,12 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
     @Override
     public List<PosaoBusotina> read() {
 
-        return session.createQuery("from PosaoBusotina", PosaoBusotina.class).list();
+        return session.createQuery("from PosaoBusotina order by odrzavanje desc", PosaoBusotina.class).list();
     }
-     public List<PosaoBusotina> read(Busotina b) {
 
+      
+     
+        public List<PosaoBusotina> read(Busotina b) {
         return session.createQuery("from PosaoBusotina"
                 + " where busotina=:busotina", PosaoBusotina.class)
                 .setParameter("busotina", b).list();
@@ -47,14 +53,17 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
         
     }
      public List<PosaoBusotina> read(String uvjet) {
+     
+      
         uvjet=uvjet.trim();
         uvjet = "%" + uvjet + "%";
-       return session.createQuery("from PosaoBusotina "
-               + " where concat(odrzavanje,' ',posao) "
-               + " like :uvjet "
-               + " order by napomena ", 
+       return session.createQuery(
+               "from PosaoBusotina " 
+               + " where concat(odrzavanje) "
+               + " like :datum "
+               + " order by odrzavanje desc ", 
                PosaoBusotina.class)
-               .setParameter("uvjet", uvjet)
+               .setParameter("datum", uvjet)
                .setMaxResults(12)
                .list();
     }
@@ -87,6 +96,10 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
          if(entitet.getPosao().getSifra()==0){
             throw new OtpremnaStanicaException("Obavezan odabir posla");
          }
+         
+          if(entitet.getBusotina().getSifra()==0){
+            throw new OtpremnaStanicaException("Obavezan odabir busotine");
+         }
     }
 
     @Override
@@ -95,6 +108,10 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
         kontrolaTlakTubinga();
         kontrolaTlakNaftovoda();
         kontrolaTlakCasinga();
+        
+        if(entitet.getOdrzavanje()==null){
+            throw new OtpremnaStanicaException("Odaberite odrzavanje i unesite promjene ");
+        }
     }
 
     @Override

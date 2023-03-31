@@ -96,9 +96,13 @@ public class PosaoBusotina extends Entitet {
         this.tlakCasinga = tlakCasinga;
     }
 
+    public String  getObrisi(){
+        return getOdrzavanje() +" " + getPosao()+" " +getBusotina()+" " +getNapomena()+" " +
+                getTlakTubinga()+" " +getTlakNaftovoda()+" " +getTlakCasinga();
+    }
     @Override
     public String toString() {
-        return  busotina + ",  " + posao + ",  " + napomena + ",  "  + "P(t)-"+tlakTubinga + ", "  +"P(n)-"+ tlakNaftovoda + ",  " + 
+        return odrzavanje + ",  " + busotina + ",  " + posao + ",  " + napomena + ",  "  + "P(t)-"+tlakTubinga + ", "  +"P(n)-"+ tlakNaftovoda + ",  " + 
              "P(c)-" + tlakCasinga;
     }
   
