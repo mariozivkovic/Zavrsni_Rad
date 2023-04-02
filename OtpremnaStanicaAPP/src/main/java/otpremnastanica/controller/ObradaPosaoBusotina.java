@@ -22,6 +22,8 @@ import otpremnastanica.util.OtpremnaStanicaException;
  * @author lovre
  */
 public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
+    
+  
 
     @Override
     public List<PosaoBusotina> read() {
@@ -88,6 +90,9 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
   
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
+       if(entitet.getOdrzavanje()==null){
+             throw new OtpremnaStanicaException("Odaberite održavanje i unesite podatke da bi ih dodali");
+        }
         kontrolaNapomena();
         kontrolaTlakTubinga();
         kontrolaTlakNaftovoda();
@@ -100,6 +105,8 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
           if(entitet.getBusotina().getSifra()==0){
             throw new OtpremnaStanicaException("Obavezan odabir busotine");
          }
+          
+          
     }
 
     @Override

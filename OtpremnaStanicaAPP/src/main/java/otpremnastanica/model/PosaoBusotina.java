@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 public class PosaoBusotina extends Entitet {
 
+ 
     @ManyToOne
     private Odrzavanje odrzavanje;
     @ManyToOne
