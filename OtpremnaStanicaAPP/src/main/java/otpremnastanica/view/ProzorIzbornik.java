@@ -47,7 +47,7 @@ public class ProzorIzbornik extends javax.swing.JFrame {
     // Stvori novi objekt tipa DefaultCategoryDataset
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-    // Dodaj podatke za naftno polje 
+    // Dodaj podatke  
     dataset.addValue(10, "Broj zaposlenika", " Zaposlenici");
     dataset.addValue(4, "Broj naftnih polja", " Naftna polja");
     dataset.addValue(10, "Broj poslova", " Poslovi");
