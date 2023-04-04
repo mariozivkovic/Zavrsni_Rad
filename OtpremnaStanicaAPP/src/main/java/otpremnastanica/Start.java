@@ -22,7 +22,7 @@ import otpremnastanica.view.SplashScreen;
 public class Start {
 
     public static void main(String[] args) {
-       
+      // new PocetniInsert();
     new SplashScreen().setVisible(true);
        
      

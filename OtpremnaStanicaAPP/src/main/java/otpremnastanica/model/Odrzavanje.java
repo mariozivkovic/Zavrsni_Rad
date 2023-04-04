@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import otpremnastanica.util.Alati;
 @Entity
 public class Odrzavanje extends Entitet {
 
@@ -56,7 +57,7 @@ public class Odrzavanje extends Entitet {
 
     @Override
     public String toString() {
-        return datum + ",  " + zaposlenik.getIme() + " " +  zaposlenik.getPrezime();
+        return Alati.sdf.format(datum) + ",  " + zaposlenik.getIme() + " " +  zaposlenik.getPrezime();
     }
 	
 	

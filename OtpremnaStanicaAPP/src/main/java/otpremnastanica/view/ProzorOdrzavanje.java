@@ -8,6 +8,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -31,7 +32,7 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
     
     private ObradaOdrzavanje obrada;
     private ObradaZaposlenik obradaZaposlenik;
-    
+     private SimpleDateFormat sdf;
 
     /**
      * Creates new form ProzorOdrzavanje
@@ -40,7 +41,7 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
         initComponents();
         obrada = new ObradaOdrzavanje();
         obradaZaposlenik = new ObradaZaposlenik();
-       
+        sdf = new SimpleDateFormat("dd.MM.YYYY", new Locale("hr","HR"));
          setTitle(Aplikacija.NAZIV_APP + ": " + 
                 Aplikacija.OPERATER.getImePrezime() + ": Održavanja");
          txtUvjet.requestFocus();

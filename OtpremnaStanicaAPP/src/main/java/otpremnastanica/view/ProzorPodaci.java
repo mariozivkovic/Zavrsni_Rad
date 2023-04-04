@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +41,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
         private ObradaPosaoBusotina obrada;
        
         private DecimalFormat df;
+        private SimpleDateFormat sdf;
         private ObradaOdrzavanje obradaOd;
         
     /**
@@ -49,7 +51,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
         initComponents();
         obrada = new ObradaPosaoBusotina();
         obradaOd = new ObradaOdrzavanje();
-       
+        sdf = new SimpleDateFormat("dd.MM.YYYY", new Locale("hr","HR"));
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("hr", "HR"));
         df = new DecimalFormat("###,##0.00",dfs);
 
@@ -152,7 +154,15 @@ public class ProzorPodaci extends javax.swing.JFrame{
       private void ucitaj(){
         
           DefaultListModel<PosaoBusotina> m = new DefaultListModel<>();
-        m.addAll(obrada.read(txtUvjet2.getText()));
+          
+          List<PosaoBusotina> lista = obrada.read();
+        
+        for(PosaoBusotina pb : lista){
+            if(pb.toString().toLowerCase().contains(txtUvjet2.getText().trim().toLowerCase())){
+                m.addElement(pb);
+            }
+        }
+     
         lstPodaci.setModel(m);
         lstPodaci.repaint();
         
@@ -520,7 +530,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
       
         }
       
-    
+        
         
         napuniModel();
         try {
@@ -538,7 +548,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
 
             return;
         }
-
+       
         if(JOptionPane.showConfirmDialog(getParent(), "Sigurno obrisati "
             + obrada.getEntitet().getOdrzavanje() + obrada.getEntitet().getObrisi() + "?", "Brisanje", JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE)== JOptionPane.NO_OPTION){
@@ -569,7 +579,15 @@ public class ProzorPodaci extends javax.swing.JFrame{
     
  private void ucitajOdrzavanja(){
         DefaultListModel<Odrzavanje> m = new DefaultListModel<>();
-        m.addAll(obradaOd.read(txtUvjet1.getText()));
+       
+        List<Odrzavanje> lista = obradaOd.read();
+        
+        for(Odrzavanje o : lista){
+            if(o.toString().toLowerCase().contains(txtUvjet1.getText().trim().toLowerCase())){
+                m.addElement(o);
+            }
+        }
+        
         lstOdrzavanjaUBazi1.setModel(m);
         lstOdrzavanjaUBazi1.repaint();
     

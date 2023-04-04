@@ -42,7 +42,7 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
 
     public List<PosaoBusotina> read(Odrzavanje o) {
 
-        return session.createQuery("from PosaoBusotina"
+        return session.createQuery("from PosaoBusotina order by odrzavanje desc"
                 + " where odrzavanje=:odrzavanje", PosaoBusotina.class)
                 .setParameter("odrzavanje", o).list();
         
