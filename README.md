@@ -9,6 +9,6 @@ Xampp,
 Visual Studio Code,
 DBeaver,
 Eclipse,
-Apache Netbeans..
+Apache Netbeans...
 
 
