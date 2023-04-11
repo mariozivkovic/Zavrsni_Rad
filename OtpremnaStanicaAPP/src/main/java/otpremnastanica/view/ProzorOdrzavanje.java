@@ -13,13 +13,18 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.text.html.parser.DTDConstants;
 import otpremnastanica.controller.ObradaOdrzavanje;
 import otpremnastanica.controller.ObradaZaposlenik;
 import otpremnastanica.model.Odrzavanje;
+import otpremnastanica.model.PosaoBusotina;
 import otpremnastanica.model.Zaposlenik;
 import otpremnastanica.util.Aplikacija;
 import otpremnastanica.util.OtpremnaStanicaException;
@@ -41,10 +46,10 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
         initComponents();
         obrada = new ObradaOdrzavanje();
         obradaZaposlenik = new ObradaZaposlenik();
-        sdf = new SimpleDateFormat("dd.MM.YYYY", new Locale("hr","HR"));
+        sdf = new SimpleDateFormat("dd.MM.yyyy", new Locale("hr","HR"));
          setTitle(Aplikacija.NAZIV_APP + ": " + 
                 Aplikacija.OPERATER.getImePrezime() + ": Održavanja");
-         txtUvjet.requestFocus();
+        definirajDatumPretrage();
          definirajDatum();
          ucitajZaposlenike();
          ucitaj();
@@ -80,11 +85,19 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
         cmbZaposlenici.setModel(m);
         cmbZaposlenici.repaint();
     }
+    private void definirajDatumPretrage(){
+        DatePickerSettings dps = 
+                new DatePickerSettings(new Locale("hr","HR"));
+       dps.setFormatForDatesCommonEra("dd.MM.yyyy");
+       dps.setTranslationClear("Očisti");
+       dps.setTranslationToday("Danas");
+       dpTraziDatum.setSettings(dps);
+    }
     
     private void definirajDatum(){
         DatePickerSettings dps = 
                 new DatePickerSettings(new Locale("hr","HR"));
-       dps.setFormatForDatesCommonEra("dd. MM. YYYY.");
+       dps.setFormatForDatesCommonEra("dd.MM.yyyy");
        dps.setTranslationClear("Očisti");
        dps.setTranslationToday("Danas");
        dpDatum.setSettings(dps);
@@ -93,7 +106,9 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
      private void ucitaj(){
            DefaultListModel<Odrzavanje> m = new DefaultListModel<>();
        
-        m.addAll(obrada.read(txtUvjet.getText(), chbTraziOdPocetkaDatuma.isSelected()));
+        m.addAll( obrada.read());
+        
+       
         lstPodaci.setModel(m);
            
         lstPodaci.repaint();
@@ -121,17 +136,16 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         lstPodaci = new javax.swing.JList<>();
-        txtUvjet = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         dpDatum = new com.github.lgooddatepicker.components.DatePicker();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cmbZaposlenici = new javax.swing.JComboBox<>();
-        chbTraziOdPocetkaDatuma = new javax.swing.JCheckBox();
         btnDodaj = new javax.swing.JButton();
         btnPromjeni = new javax.swing.JButton();
         btnObrisi = new javax.swing.JButton();
+        dpTraziDatum = new com.github.lgooddatepicker.components.DatePicker();
+        btnPretrazi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -144,27 +158,6 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(lstPodaci);
-
-        txtUvjet.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
-        txtUvjet.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUvjetActionPerformed(evt);
-            }
-        });
-        txtUvjet.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtUvjetKeyPressed(evt);
-            }
-        });
-
-        jButton1.setBackground(new java.awt.Color(37, 179, 213));
-        jButton1.setForeground(new java.awt.Color(102, 102, 102));
-        jButton1.setText("🔍");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(37, 179, 213));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
@@ -180,43 +173,51 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
             .addGap(0, 27, Short.MAX_VALUE)
         );
 
+        jLabel1.setText("Datum:");
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel1.setText("Datum:");
 
+        jLabel2.setText("Zaposlenik:");
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel2.setText("Zaposlenik:");
 
-        chbTraziOdPocetkaDatuma.setText("Traži od početka datuma");
-
+        btnDodaj.setText("Dodaj");
         btnDodaj.setBackground(new java.awt.Color(37, 179, 213));
         btnDodaj.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDodaj.setForeground(new java.awt.Color(102, 102, 102));
-        btnDodaj.setText("Dodaj");
         btnDodaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDodajActionPerformed(evt);
             }
         });
 
+        btnPromjeni.setText("Promjeni");
         btnPromjeni.setBackground(new java.awt.Color(37, 179, 213));
         btnPromjeni.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnPromjeni.setForeground(new java.awt.Color(102, 102, 102));
-        btnPromjeni.setText("Promjeni");
         btnPromjeni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPromjeniActionPerformed(evt);
             }
         });
 
+        btnObrisi.setText("Obriši");
         btnObrisi.setBackground(new java.awt.Color(37, 179, 213));
         btnObrisi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnObrisi.setForeground(new java.awt.Color(102, 102, 102));
-        btnObrisi.setText("Obriši");
         btnObrisi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnObrisiActionPerformed(evt);
+            }
+        });
+
+        btnPretrazi.setBackground(new java.awt.Color(27, 179, 213));
+        btnPretrazi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnPretrazi.setForeground(new java.awt.Color(102, 102, 102));
+        btnPretrazi.setText("Pretraži");
+        btnPretrazi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPretraziActionPerformed(evt);
             }
         });
 
@@ -229,12 +230,10 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(chbTraziOdPocetkaDatuma, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(txtUvjet, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButton1))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(dpTraziDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnPretrazi)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
@@ -254,13 +253,11 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtUvjet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chbTraziOdPocetkaDatuma)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(dpTraziDatum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPretrazi))
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
@@ -277,7 +274,7 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
                             .addComponent(btnPromjeni))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnObrisi)))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -296,20 +293,6 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
 
        napuniView();
     }//GEN-LAST:event_lstPodaciValueChanged
-
-    private void txtUvjetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUvjetActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUvjetActionPerformed
-
-    private void txtUvjetKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUvjetKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            ucitaj();
-        }
-    }//GEN-LAST:event_txtUvjetKeyPressed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ucitaj();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnDodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajActionPerformed
         obrada.setEntitet(new Odrzavanje());
@@ -363,21 +346,36 @@ public class ProzorOdrzavanje extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnObrisiActionPerformed
 
+    private void btnPretraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPretraziActionPerformed
+       if(dpTraziDatum.getText().isEmpty()){
+           JOptionPane.showMessageDialog(getRootPane(), "Prvo odaberite datum");
+
+            return; 
+       }
+        
+        
+        DefaultListModel<Odrzavanje> m = new DefaultListModel<>();
+       m.addAll(obrada.read(dpTraziDatum.getText()));
+       
+          
+       lstPodaci.setModel(m);
+       lstPodaci.repaint();
+    }//GEN-LAST:event_btnPretraziActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodaj;
     private javax.swing.JButton btnObrisi;
+    private javax.swing.JButton btnPretrazi;
     private javax.swing.JButton btnPromjeni;
-    private javax.swing.JCheckBox chbTraziOdPocetkaDatuma;
     private javax.swing.JComboBox<Zaposlenik> cmbZaposlenici;
     private com.github.lgooddatepicker.components.DatePicker dpDatum;
-    private javax.swing.JButton jButton1;
+    private com.github.lgooddatepicker.components.DatePicker dpTraziDatum;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<Odrzavanje> lstPodaci;
-    private javax.swing.JTextField txtUvjet;
     // End of variables declaration//GEN-END:variables
 }

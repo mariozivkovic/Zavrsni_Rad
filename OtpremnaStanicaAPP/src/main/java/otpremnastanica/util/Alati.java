@@ -20,7 +20,7 @@ import us.codecraft.xsoup.Xsoup;
  */
 public class Alati {
     
-    public static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY", new Locale("hr","HR"));
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", new Locale("hr","HR"));
        
     
     public static String dovuciOib() {
