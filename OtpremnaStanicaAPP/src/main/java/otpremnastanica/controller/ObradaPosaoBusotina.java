@@ -6,6 +6,8 @@ package otpremnastanica.controller;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,39 +56,35 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
                 .setParameter("posao", p).list();
         
     }
-     public List<PosaoBusotina> read(String uvjet) {
-     
-      
-        uvjet=uvjet.trim();
-        uvjet = "%" + uvjet + "%";
-       return session.createQuery(
-               "from PosaoBusotina " 
-               + " where concat(odrzavanje) "
-               + " like :datum "
-               + " order by odrzavanje desc ", 
-               PosaoBusotina.class)
-               .setParameter("datum", uvjet)
+     public List<Odrzavanje> read(String datumString) {
+         System.out.println(datumString);
+         LocalDate Date = LocalDate.parse(datumString, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+       return session.createQuery("from Odrzavanje "
+               + " where cast(datum as Date)=:uvjet  "
+               
+              , 
+               Odrzavanje.class)
+               .setParameter("uvjet", Date)
                .setMaxResults(12)
                .list();
     }
-      public List<PosaoBusotina> read(String uvjet, 
-            boolean traziOdPocetkaDatuma) {
-        uvjet=uvjet.trim();
-        if(traziOdPocetkaDatuma){
-            uvjet = uvjet + "%";
-        }else{
-            uvjet = "%" + uvjet + "%";
-        }
-        
-       return session.createQuery("from PosaoBusotina "
-               + " where concat(odrzavanje) "
-               + " like :datum "
-               + " order by odrzavanje ", 
+     public List<PosaoBusotina> read(String pocetniDatumString, String krajnjiDatumString) {
+       System.out.println(pocetniDatumString);
+         LocalDate pocetniDate = LocalDate.parse(pocetniDatumString, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+          LocalDate krajnjiDate = LocalDate.parse(krajnjiDatumString, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+       return session.createQuery(
+  "SELECT pb FROM PosaoBusotina pb JOIN pb.odrzavanje o WHERE CAST(o.datum AS Date) BETWEEN :uvjet AND :uvjet2 " 
+               +"ORDER BY o.datum desc"
+              , 
                PosaoBusotina.class)
-               .setParameter("datum", uvjet)
-               .setMaxResults(12)
+               .setParameter("uvjet", pocetniDate)
+                .setParameter("uvjet2", krajnjiDate)
+               
                .list();
-      }
+      
+       
+    }
+    
   
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
