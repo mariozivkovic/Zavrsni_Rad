@@ -60,6 +60,8 @@ public class Odrzavanje extends Entitet {
         return Alati.sdf.format(datum) + ",  " + zaposlenik.getIme() + " " +  zaposlenik.getPrezime();
     }
 	
-	
+	public String datumZaposlenikToStrig(){
+            return Alati.sdf.format(getDatum()) + ", " + getZaposlenik();
+        }
 
 }

@@ -21,7 +21,7 @@ public class ObradaOdrzavanje extends Obrada<Odrzavanje> {
     @Override
     public List<Odrzavanje> read() {
 
-        return session.createQuery("from Odrzavanje", Odrzavanje.class).list();
+        return session.createQuery("from Odrzavanje order by datum desc", Odrzavanje.class).list();
     }
      public List<Odrzavanje> read(Zaposlenik z) {
 

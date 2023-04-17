@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.crypto.interfaces.PBEKey;
 import otpremnastanica.model.Busotina;
 import otpremnastanica.model.Odrzavanje;
 import otpremnastanica.model.Posao;
@@ -91,10 +92,8 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
        if(entitet.getOdrzavanje()==null){
              throw new OtpremnaStanicaException("Odaberite održavanje i unesite podatke da bi ih dodali");
         }
-        kontrolaNapomena();
-        kontrolaTlakTubinga();
-        kontrolaTlakNaftovoda();
-        kontrolaTlakCasinga();
+       
+       
         
          if(entitet.getPosao().getSifra()==0){
             throw new OtpremnaStanicaException("Obavezan odabir posla");
@@ -113,11 +112,25 @@ public class ObradaPosaoBusotina extends Obrada<PosaoBusotina> {
         kontrolaTlakTubinga();
         kontrolaTlakNaftovoda();
         kontrolaTlakCasinga();
+     
+           kontrolaZaposlenika();
+       
+      
         
         if(entitet.getOdrzavanje()==null){
             throw new OtpremnaStanicaException("Odaberite odrzavanje i unesite promjene ");
         }
     }
+public void kontrolaZaposlenika() throws OtpremnaStanicaException{
+    
+    
+    if(entitet.getNapomena()==null || entitet.getNapomena().isBlank()){
+         throw new OtpremnaStanicaException("Zaposlenik " + 
+                 entitet.getOdrzavanje().getZaposlenik().getImePrezime() + " nema napomenu");
+    }
+   
+}
+    
 
     @Override
     protected void kontrolaBrisanje() throws OtpremnaStanicaException {

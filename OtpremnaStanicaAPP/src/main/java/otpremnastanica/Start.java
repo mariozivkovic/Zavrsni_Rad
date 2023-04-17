@@ -27,7 +27,7 @@ public class Start {
        
      
        
-       // new PocetniInsert();
+       //HibernateUtil.getSession();
      
         
         }

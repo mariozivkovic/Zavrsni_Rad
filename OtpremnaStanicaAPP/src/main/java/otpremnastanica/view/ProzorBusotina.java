@@ -78,8 +78,7 @@ public class ProzorBusotina extends javax.swing.JFrame {
      btnObrisi.setVisible(true);
      }
      
-    
-
+  
 
 
 
