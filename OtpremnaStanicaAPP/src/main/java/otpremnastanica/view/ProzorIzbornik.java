@@ -137,6 +137,7 @@ public class ProzorIzbornik extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         lblVrijeme = new javax.swing.JLabel();
         pnlGraf = new javax.swing.JPanel();
+        lblGit = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -167,8 +168,17 @@ public class ProzorIzbornik extends javax.swing.JFrame {
         );
         pnlGrafLayout.setVerticalGroup(
             pnlGrafLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 237, Short.MAX_VALUE)
+            .addGap(0, 269, Short.MAX_VALUE)
         );
+
+        lblGit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblGit.setForeground(new java.awt.Color(102, 102, 102));
+        lblGit.setText("Github");
+        lblGit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblGitMouseClicked(evt);
+            }
+        });
 
         jMenuBar1.setBackground(new java.awt.Color(37, 179, 213));
         jMenuBar1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(135, 135, 135)));
@@ -272,12 +282,18 @@ public class ProzorIzbornik extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(pnlGraf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblGit)
+                .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlGraf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblGit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlGraf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -334,6 +350,16 @@ public class ProzorIzbornik extends javax.swing.JFrame {
        new ProzorPodaci().setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void lblGitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGitMouseClicked
+         try {
+            ProcessBuilder builder = new ProcessBuilder(
+                    "cmd.exe", "/c", "explorer https://github.com/mariozivkovic/Zavrsni_Rad");
+            builder.redirectErrorStream(true);
+            Process p = builder.start();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_lblGitMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
@@ -349,6 +375,7 @@ public class ProzorIzbornik extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel lblGit;
     private javax.swing.JLabel lblVrijeme;
     private javax.swing.JPanel pnlGraf;
     // End of variables declaration//GEN-END:variables

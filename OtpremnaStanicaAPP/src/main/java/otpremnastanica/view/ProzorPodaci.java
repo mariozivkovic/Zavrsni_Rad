@@ -7,6 +7,8 @@ package otpremnastanica.view;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -20,7 +22,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import otpremnastanica.controller.ObradaBusotina;
 import otpremnastanica.controller.ObradaOdrzavanje;
 import otpremnastanica.controller.ObradaPosao;
@@ -60,6 +75,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
 
          setTitle(Aplikacija.NAZIV_APP + ": " + 
                 Aplikacija.OPERATER.getImePrezime() + ": Podaci");
+         
          definirajDatumOd();
          definirajkrajnjiDatum();
          definirajpocetniDatum();
@@ -68,6 +84,16 @@ public class ProzorPodaci extends javax.swing.JFrame{
          ucitajPoslove();
          ucitaj();
     }
+    private void dodajPodatke() {
+    // Umetanje podataka u lstPodaci
+    var e = obrada.getEntitet();
+    String[] podaci = {
+                       e.getNapomena() != null ? e.getNapomena() : "", 
+                       e.getTlakTubinga() != null ? "P(t)-" + e.getTlakTubinga() : "",
+                       e.getTlakNaftovoda() != null ? "P(n)-" + e.getTlakNaftovoda() : "", 
+                       e.getTlakCasinga() != null ? "P(c)-" + e.getTlakCasinga() : ""};
+  
+}
     private void definirajDatumOd(){
         DatePickerSettings dps = 
                 new DatePickerSettings(new Locale("hr","HR"));
@@ -121,17 +147,36 @@ public class ProzorPodaci extends javax.swing.JFrame{
         e.setBusotina((Busotina)cmbBusotine.getSelectedItem());
       
            e.setOdrzavanje((Odrzavanje)lstOdrzavanjaUBazi1.getSelectedValue());
-     
+        if(obrada.getEntitet().getNapomena()==null){
+            e.setNapomena("");
+        }
         
+          if(obrada.getEntitet().getTlakTubinga()==null){
+            e.setTlakTubinga(BigDecimal.ZERO);
+        }
+          
+          if(obrada.getEntitet().getTlakNaftovoda()==null){
+            e.setTlakNaftovoda(BigDecimal.ZERO);
+        }
+           if(obrada.getEntitet().getTlakCasinga()==null){
+            e.setTlakCasinga( BigDecimal.ZERO);
+        }
+    }
         
-    
+
+
        
-     }
+         
+
      private void napuniView(){
            var e = obrada.getEntitet();
          cmbPosao.setSelectedItem(e.getPosao());
          cmbBusotine.setSelectedItem(e.getBusotina());
-        
+         
+     
+
+
+
           
         DefaultListModel<Odrzavanje> m = new DefaultListModel<>();
         
@@ -151,6 +196,9 @@ public class ProzorPodaci extends javax.swing.JFrame{
       private void ucitaj(){
         
           DefaultListModel<PosaoBusotina> m = new DefaultListModel<>();
+        
+
+
           
          m.addAll( obrada.read());
         
@@ -189,6 +237,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
         btnPretraziOd = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        btnIpisiUExcel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -299,6 +348,16 @@ public class ProzorPodaci extends javax.swing.JFrame{
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
 
+        btnIpisiUExcel.setBackground(new java.awt.Color(37, 179, 213));
+        btnIpisiUExcel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnIpisiUExcel.setForeground(new java.awt.Color(102, 102, 102));
+        btnIpisiUExcel.setText("Ipiši u Excel");
+        btnIpisiUExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIpisiUExcelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -315,17 +374,17 @@ public class ProzorPodaci extends javax.swing.JFrame{
                                 .addGap(18, 18, 18)
                                 .addComponent(btnPretraziOd)))
                         .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(cmbPosao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnDodaj)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnPromjeni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addComponent(cmbBusotine, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel8)
-                                .addComponent(btnObrisi, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmbPosao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnDodaj)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnPromjeni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmbBusotine, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8)
+                            .addComponent(btnObrisi, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                            .addComponent(jLabel5)
+                            .addComponent(btnIpisiUExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jLabel6))
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,7 +442,9 @@ public class ProzorPodaci extends javax.swing.JFrame{
                                     .addComponent(btnPromjeni))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnObrisi)
-                                .addGap(179, 179, 179))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnIpisiUExcel)
+                                .addGap(150, 150, 150))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(dpPocetniDatum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -409,10 +470,12 @@ public class ProzorPodaci extends javax.swing.JFrame{
                 obrada.create();
                 ucitajOdrzavanja();
                 ucitaj();
+                
                
             } catch (OtpremnaStanicaException ex) {
                 JOptionPane.showMessageDialog(getParent(), ex.getPoruka());
             }
+        
     }//GEN-LAST:event_btnDodajActionPerformed
 
     private void lstOdrzavanjaUBazi1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstOdrzavanjaUBazi1ValueChanged
@@ -532,6 +595,136 @@ public class ProzorPodaci extends javax.swing.JFrame{
        }
     
     }//GEN-LAST:event_lstOdrzavanjaUBazi1MouseClicked
+
+    private void btnIpisiUExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIpisiUExcelActionPerformed
+           JFileChooser jfc = new JFileChooser();
+        jfc.setCurrentDirectory(new File(System.getProperty("user.home")));
+        jfc.setSelectedFile(new File(System.getProperty("user.home")
+                + File.separator + "podaci.xlsx"));
+        if (jfc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        try {
+
+            Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
+
+            /* CreationHelper helps us create instances of various things like DataFormat, 
+           Hyperlink, RichTextString etc, in a format (HSSF, XSSF) independent way */
+            CreationHelper createHelper = workbook.getCreationHelper();
+
+            // Create a Sheet
+            Sheet sheet = workbook.createSheet("Podaci održavanja");
+
+            // Create a Font for styling header cells
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 14);
+            headerFont.setColor(IndexedColors.RED.getIndex());
+
+            // Create a CellStyle with the font
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            // Create a Row
+            Row headerRow = sheet.createRow(0);
+
+            // Create cells
+            Cell cell = headerRow.createCell(0);
+            cell.setCellValue("Održavanje");
+            cell.setCellStyle(headerCellStyle);
+            
+            cell = headerRow.createCell(1);
+            cell.setCellValue("Bušotina");
+            cell.setCellStyle(headerCellStyle);
+
+            cell = headerRow.createCell(2);
+            cell.setCellValue("Posao");
+            cell.setCellStyle(headerCellStyle);
+
+            cell = headerRow.createCell(3);
+            cell.setCellValue("Napomena");
+            cell.setCellStyle(headerCellStyle);
+
+            cell = headerRow.createCell(4);
+            cell.setCellValue("P(t)");
+            cell.setCellStyle(headerCellStyle);
+            
+            cell = headerRow.createCell(5);
+            cell.setCellValue("P(n)");
+            cell.setCellStyle(headerCellStyle);
+            
+            cell = headerRow.createCell(6);
+            cell.setCellValue("P(c)");
+            cell.setCellStyle(headerCellStyle);
+
+            // Create Other rows and cells with employees data
+            int rowNum = 1;
+            Row row;
+            for(PosaoBusotina pb: obrada.read()){
+           
+                    
+                
+                row = sheet.createRow(rowNum++);
+
+                row.createCell(0)
+                        .setCellValue(pb.getOdrzavanje().datumZaposlenikToStrig());
+
+                row.createCell(1)
+                        .setCellValue(pb.getBusotina().getNaziv());
+
+                row.createCell(2)
+                        .setCellValue(pb.getPosao().getNaziv());
+
+                row.createCell(3)
+                        .setCellValue(pb.getNapomena());
+                if (pb.getTlakTubinga() != null) {
+                 row.createCell(4)
+                        
+                        .setCellValue( pb.getTlakTubinga().doubleValue());
+                }
+                if (pb.getTlakNaftovoda()!= null) {
+                   row.createCell(5)
+                        .setCellValue( pb.getTlakNaftovoda().doubleValue());
+                }
+                if (pb.getTlakCasinga() != null) {
+                     row.createCell(6)
+                        .setCellValue( pb.getTlakCasinga().doubleValue());
+                }
+
+            
+            }
+
+            row = sheet.createRow(rowNum);
+            cell = row.createCell(3);
+            CellStyle style = workbook.createCellStyle();
+            DataFormat format = workbook.createDataFormat();
+            style.setDataFormat(format.getFormat("0.00"));
+            cell.setCellStyle(style);
+            cell.setCellFormula("sum(G2:G" + (rowNum) + ")");
+
+            // Resize all columns to fit the content size
+            for (int i = 0; i < 4; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Write the output to a file
+            FileOutputStream fileOut = new FileOutputStream(jfc.getSelectedFile());
+            workbook.write(fileOut);
+            fileOut.close();
+
+            // Closing the workbook
+            workbook.close();
+
+            ProcessBuilder builder = new ProcessBuilder(
+                    "cmd.exe", "/c", jfc.getSelectedFile().getAbsolutePath());
+            builder.redirectErrorStream(true);
+            Process p = builder.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnIpisiUExcelActionPerformed
     
  private void ucitajOdrzavanja(){
         DefaultListModel<Odrzavanje> m = new DefaultListModel<>();
@@ -549,6 +742,7 @@ public class ProzorPodaci extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodaj;
+    private javax.swing.JButton btnIpisiUExcel;
     private javax.swing.JButton btnObrisi;
     private javax.swing.JButton btnPretraziOd;
     private javax.swing.JButton btnPretraži;

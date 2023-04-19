@@ -29,25 +29,46 @@ public class ProzorInformacijeNaOdrzavanju extends javax.swing.JFrame {
         this.prozorPodaci = prozorPodaci;
          DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("hr", "HR"));
         df = new DecimalFormat("###,##0.00",dfs);
+        if(prozorPodaci.getOdabranoOdrzavanje()==null){
+           lblImeZaposlenika.setText("Kreiranje novih podataka"); 
+        }else{
         lblImeZaposlenika.setText(prozorPodaci.getOdabranoOdrzavanje().datumZaposlenikToStrig());
+        }
         lblNazivBusotine.setText(prozorPodaci.getOdabranuBusotinu().getNaziv());
         
         var pin = prozorPodaci.getPosaoBusotina();
-        
+        if(pin==null){
+            lblImeZaposlenika.setText("Kreiranje novih podataka");
+        }else{
         txtNapomena.setText(pin.getNapomena());
+        }
         
         try {
-            txtTlakTubinga.setText(df.format(pin.getTlakTubinga()));
+          
+              if(pin==null){
+                 lblImeZaposlenika.setText("Kreiranje novih podataka");
+                }else{
+               
+                txtTlakTubinga.setText(df.format(pin.getTlakTubinga()));
+            }
         } catch (Exception e) {
              pin.setTlakTubinga(BigDecimal.ZERO);
         }
          try {
+             if(pin==null){
+                 lblImeZaposlenika.setText("Kreiranje novih podataka");
+                }else{
             txtTlakNaftovoda.setText(df.format(pin.getTlakNaftovoda()));
+             }
         } catch (Exception e) {
              pin.setTlakNaftovoda(BigDecimal.ZERO);
         }
           try {
+              if(pin==null){
+                 lblImeZaposlenika.setText("Kreiranje novih podataka");
+                }else{
             txtTlakCasinga.setText(df.format(pin.getTlakCasinga()));
+              }
         } catch (Exception e) {
              pin.setTlakCasinga(BigDecimal.ZERO);
         }
@@ -107,7 +128,10 @@ public class ProzorInformacijeNaOdrzavanju extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Tlak casinga:");
 
-        btnPromjeni.setText("Promjeni");
+        btnPromjeni.setBackground(new java.awt.Color(37, 179, 213));
+        btnPromjeni.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnPromjeni.setForeground(new java.awt.Color(102, 102, 102));
+        btnPromjeni.setText("Spremi");
         btnPromjeni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPromjeniActionPerformed(evt);
@@ -206,29 +230,54 @@ public class ProzorInformacijeNaOdrzavanju extends javax.swing.JFrame {
          }
        
         var pin = prozorPodaci.getPosaoBusotina();
+        if(pin==null){
+            lblImeZaposlenika.setText("Kreiranje novih podataka");
+        }else{
         pin.setNapomena(txtNapomena.getText());
+
+        }
            try {
+                if(pin==null){
+            lblImeZaposlenika.setText("Kreiranje novih podataka");
+        }else{
                 pin.setTlakTubinga(BigDecimal.valueOf(df.parse
         (txtTlakTubinga.getText()).doubleValue()));
+                }
             } catch (ParseException ex) {
                 pin.setTlakTubinga(BigDecimal.ZERO);
             }
            
               try {
+                   if(pin==null){
+            lblImeZaposlenika.setText("Kreiranje novih podataka");
+        }else{
                 pin.setTlakNaftovoda(BigDecimal.valueOf(df.parse
         (txtTlakNaftovoda.getText()).doubleValue()));
+                   }
             } catch (ParseException ex) {
                 pin.setTlakNaftovoda(BigDecimal.ZERO);
             }
               
                  try {
+                      if(pin==null){
+            lblImeZaposlenika.setText("Kreiranje novih podataka");
+        }else{
                 pin.setTlakCasinga(BigDecimal.valueOf(df.parse
         (txtTlakCasinga.getText()).doubleValue()));
+                      }
             } catch (ParseException ex) {
                 pin.setTlakCasinga(BigDecimal.ZERO);
             }
                  try {
+                      if(pin==null){
+            lblImeZaposlenika.setText("Kreiranje novih podataka");
+        }else{
+               if(pin==null){
+            lblImeZaposlenika.setText("Kreiranje novih podataka");
+        }else{
             prozorPodaci.getObradaPosaoBusotina().kontrolaZaposlenika();
+                                     }
+                      }
                  dispose();
         } catch (OtpremnaStanicaException e) {
             JOptionPane.showMessageDialog(getRootPane(), "Zaposlenik" +

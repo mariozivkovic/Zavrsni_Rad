@@ -103,7 +103,7 @@ public class PosaoBusotina extends Entitet {
     }
     @Override
     public String toString() {
-        return odrzavanje + ",  " + busotina + ",  " + posao + ",  " + napomena + ",  "  + "P(t)-"+tlakTubinga + ", "  +"P(n)-"+ tlakNaftovoda + ",  " + 
+        return odrzavanje + ",  " + busotina + ",  " + posao + ",  " + napomena + "  "  + "P(t)-"+tlakTubinga + ", "  +"P(n)-"+ tlakNaftovoda + ",  " + 
              "P(c)-" + tlakCasinga;
     }
   
