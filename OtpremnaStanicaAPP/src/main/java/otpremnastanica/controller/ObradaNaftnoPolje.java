@@ -22,6 +22,37 @@ public class ObradaNaftnoPolje extends Obrada<NaftnoPolje> {
         return session.createQuery("from NaftnoPolje order by naziv", NaftnoPolje.class).list();
     }
 
+    public List<NaftnoPolje> read(String uvjet) {
+        uvjet=uvjet.trim();
+        uvjet = "%" + uvjet + "%";
+       return session.createQuery("from NaftnoPolje "
+               + " where concat(naziv) "
+               + " like :uvjet "
+               + " order by naziv desc ", 
+               NaftnoPolje.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
+    
+     public List<NaftnoPolje> read(String uvjet, 
+            boolean traziOdPocetkaImena) {
+        uvjet=uvjet.trim();
+        if(traziOdPocetkaImena){
+            uvjet = uvjet + "%";
+        }else{
+            uvjet = "%" + uvjet + "%";
+        }
+        
+       return session.createQuery("from NaftnoPolje "
+               + " where concat(naziv) "
+               + " like :uvjet "
+               + " order by naziv desc ", 
+               NaftnoPolje.class)
+               .setParameter("uvjet", uvjet)
+               .setMaxResults(12)
+               .list();
+    }
     @Override
     protected void kontrolaUnos() throws OtpremnaStanicaException {
         kontrolaNaziv();
