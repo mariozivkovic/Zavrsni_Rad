@@ -66,17 +66,17 @@ public class SplashScreen extends javax.swing.JFrame {
         setUndecorated(true);
         setType(java.awt.Window.Type.POPUP);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\lovre\\OneDrive\\Desktop\\OtpemnaStanica.jpg")); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addContainerGap(371, Short.MAX_VALUE))
         );
 
         pack();

@@ -69,8 +69,8 @@ public class ProzorPodaci extends javax.swing.JFrame{
         initComponents();
         obrada = new ObradaPosaoBusotina();
         obradaOd = new ObradaOdrzavanje();
-        sdf = new SimpleDateFormat("dd.MM.YYYY", new Locale("hr","HR"));
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("hr", "HR"));
+        sdf = new SimpleDateFormat("dd.MM.YYYY", Locale.of("hr","HR"));
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.of("hr", "HR"));
         df = new DecimalFormat("###,##0.00",dfs);
 
          setTitle(Aplikacija.NAZIV_APP + ": " + 
